@@ -1,33 +1,16 @@
-name: Publish Draft Releases
-
+name: Publish Release
 on:
   push:
-    # branches to consider in the event; optional, defaults to all
-    branches:
-      - main
-
+    tags:
+      - 'v*'
 jobs:
-  publish-releases:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16
-      - name: Install GitHub CLI
-        run: |
-          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
-          sudo apt-add-repository https://cli.github.com/packages
-          sudo apt-get update
-          sudo apt-get install gh
-      - name: Check out the code
-        run: gh repo clone $GITHUB_REPOSITORY . -- --depth=1
-      - name: Publish Draft Releases
-        run: |
-          RELEASE_URL=$RELEASE_URL
-          if [ -n "$RELEASE_URL" ]; then
-            echo "Publishing release at $RELEASE_URL"
-            gh release edit $RELEASE_URL --draft false
-          fi
-        env:
-          RELEASE_URL: ${{ secrets.RELEASE_URL }}
+    - uses: actions/checkout@v3
+    - name: Create a Release
+      uses: elgohr/Github-Release-Action@v4
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      with:
+        title: MyReleaseMessage
