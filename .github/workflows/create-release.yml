@@ -9,18 +9,19 @@ on:
 jobs:
   publish-releases:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [12, 16]
     steps:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: 16
-
+      - name: Install GitHub CLI
+        run: |
+          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
+          sudo apt-add-repository https://cli.github.com/packages
+          sudo apt-get update
+          sudo apt-get install gh
       - name: Check out the code
-        uses: actions/checkout@v2
-
+        run: gh repo clone $GITHUB_REPOSITORY . -- --depth=1
       - name: Publish Draft Releases
         run: |
           RELEASE_URL=$RELEASE_URL
@@ -30,4 +31,3 @@ jobs:
           fi
         env:
           RELEASE_URL: ${{ secrets.RELEASE_URL }}
-        # Set the GITHUB_TOKEN secret in your repository to access the GitHub API
