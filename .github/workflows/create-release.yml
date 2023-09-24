@@ -1,0 +1,25 @@
+name: Publish Draft Releases
+
+on:
+  push:
+    # branches to consider in the event; optional, defaults to all
+    branches:
+      - main
+
+jobs:
+  publish-releases:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v2
+
+      - name: Publish Draft Releases
+        run: |
+          RELEASE_URL=$RELEASE_URL
+          if [ -n "$RELEASE_URL" ]; then
+            echo "Publishing release at $RELEASE_URL"
+            gh release edit $RELEASE_URL --draft false
+          fi
+        env:
+          RELEASE_URL: ${{ secrets.RELEASE_URL }}
+        # Set the GITHUB_TOKEN secret in your repository to access the GitHub API
