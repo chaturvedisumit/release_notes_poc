@@ -10,14 +10,38 @@ categories:
   - title: "Documentation"
     label: "documentation"
 
+paginatePath: "data.repository.issues.edges" # Adjust this based on your data structure
+
+query: |
+  query ($owner: String!, $repo: String!, $first: Int, $after: String) {
+    repository(owner: $owner, name: $repo) {
+      issues(first: $first, after: $after) {
+        edges {
+          node {
+            title
+            body
+            labels(first: 5) {
+              edges {
+                node {
+                  name
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 template: |
   # Release Notes {{ version }}
 
   {{#each categories}}
   ## {{ this.title }}
   {{#each changes}}
-  {{#ifCond this.labels.[0] '===' ../this.label}}
-  - {{ this.title }}
+  {{#ifCond this.node.labels.edges.[0].node.name '===' ../this.label}}
+  - {{ this.node.title }}
   {{/ifCond}}
   {{/each}}
   {{/each}}
