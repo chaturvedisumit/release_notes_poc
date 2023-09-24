@@ -10,19 +10,16 @@ categories:
   - title: "Documentation"
     label: "documentation"
 
-changes:
-  - title: "Features 🚀"
-    labels:
-      - "feature"
-  - title: "Bug Fixes 🐛"
-    labels:
-      - "bug"
-      - "fix"
-  - title: "Enhancements 💪"
-    labels:
-      - "enhancement"
-  - title: "Documentation 📖"
-    labels:
-      - "documentation"
+template: |
+  # Release Notes {{ version }}
+
+  {{#each categories}}
+  ## {{ this.title }}
+  {{#each changes}}
+  {{#ifCond this.labels.[0] '===' ../this.label}}
+  - {{ this.title }}
+  {{/ifCond}}
+  {{/each}}
+  {{/each}}
 
 footer: "Thank you for using our software!"
