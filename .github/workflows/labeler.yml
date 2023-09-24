@@ -1,17 +1,13 @@
-name: Automatic Labeler
+name: PR Branch Labeler
 
-on:
-  issues:
-    types:
-      - opened
+on: pull_request
 
 jobs:
-  label:
+  label_prs:
     runs-on: ubuntu-latest
     steps:
-      - name: Check Labels
-        uses: actions/labeler@v4
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          labels: |
-            {"bug": ["bug", "fix"], "feature": ["feature"], "hotfix": ["hotfix"]}
+    - name: Label PRs
+      if: github.event.action == 'opened' # Only run the action when the PR was first opened
+      uses: ffittschen/pr-branch-labeler@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
