@@ -10,8 +10,8 @@ categories:
       - 'fix'
       - 'bugfix'
       - 'bug'
-  - title: '🧰 Maintenance'
-    label: 'chore'
+  - title: '🧰 Hot fix'
+    label: 'hotfix'
   - title: '🧺 Miscellaneous' #Everything except ABAP
     label: 'misc'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
