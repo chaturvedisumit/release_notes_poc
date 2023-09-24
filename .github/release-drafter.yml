@@ -25,6 +25,31 @@ version-resolver:
     labels:
       - 'patch'
   default: patch
+
+paginatePath: "data.repository.issues.edges" # Adjust this based on your data structure
+
+query: |
+  query ($owner: String!, $repo: String!, $first: Int, $after: String) {
+    repository(owner: $owner, name: $repo) {
+      issues(first: $first, after: $after) {
+        edges {
+          node {
+            title
+            body
+            labels(first: 5) {
+              edges {
+                node {
+                  name
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 template: |
   ## Changes
 
