@@ -2,6 +2,9 @@
 feature:
   head: "feature/*"
 
-# Apply label "bugfix" if head matches one of "bugfix/*" or "hotfix/*"
+# Apply label "bugfix" if head matches "bugfix/*"
 bugfix:
-  head: ["bugfix/*", "hotfix/*"]
+  head: ["bugfix/*"]
+
+hotfix:
+  head: ["hotfix/*"]
