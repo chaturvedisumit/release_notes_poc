@@ -23,10 +23,13 @@ version-resolver:
   minor:
     labels:
       - 'minor'
-  patch:
+ patch:
     labels:
-      - 'patch'
-  default: patch
+      - 'type: bug'
+      - 'type: maintenance'
+      - 'type: docs'
+      - 'type: dependencies'
+      - 'type: security'
 template: |
   ## Changes
   $CHANGES
