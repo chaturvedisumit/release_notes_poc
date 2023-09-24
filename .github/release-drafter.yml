@@ -1,4 +1,28 @@
-template: |
-  ## What’s Changed
+name-template: "v{{ version }}"
+tag-template: "{{ version }}"
+categories:
+  - title: "Features"
+    label: "feature"
+  - title: "Bug Fixes"
+    label: "bug"
+  - title: "Enhancements"
+    label: "enhancement"
+  - title: "Documentation"
+    label: "documentation"
 
-  $CHANGES
+changes:
+  - title: "Features 🚀"
+    labels:
+      - "feature"
+  - title: "Bug Fixes 🐛"
+    labels:
+      - "bug"
+      - "fix"
+  - title: "Enhancements 💪"
+    labels:
+      - "enhancement"
+  - title: "Documentation 📖"
+    labels:
+      - "documentation"
+
+footer: "Thank you for using our software!"
