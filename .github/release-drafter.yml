@@ -1,7 +1,8 @@
-name-template: 'v$MAJOR.$MINOR.$PATCH 🌈'
+
 tag-template: 'v$MAJOR.$MINOR.$PATCH'
 
 version-template: '$MAJOR.$MINOR.$PATCH'
+name-template: '$version-template🌈'
 
 categories:
   - title: '🚀 Features'
