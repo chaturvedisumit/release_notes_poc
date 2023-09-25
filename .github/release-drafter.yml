@@ -1,8 +1,6 @@
 
-tag-template: 'v$MAJOR.$MINOR.$PATCH'
-
-version-template: '$MAJOR.$MINOR.$PATCH'
-name-template: '$version-template🌈'
+name-template: 'v$RESOLVED_VERSION 🌈'
+tag-template: 'v$RESOLVED_VERSION'
 
 categories:
   - title: '🚀 Features'
@@ -27,7 +25,6 @@ version-resolver:
   minor:
     labels:
       - 'bugfix'
-      - 'fix'
   patch:
     labels:
       - 'hotfix'
