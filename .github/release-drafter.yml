@@ -33,3 +33,4 @@ version-resolver:
 template: |
   ## Changes
   $CHANGES
+  Resolved Version: $RESOLVED_VERSION
