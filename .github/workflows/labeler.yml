@@ -7,6 +7,6 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-    runs-on:  [self-hosted, Linux, size/small, emt]
+    runs-on:  ubuntu-latest
     steps:
     - uses: actions/labeler@v4
