@@ -4,7 +4,7 @@ major:
 
 # Apply label "bugfix" if head matches "bugfix/*"
 minor:
-  head: ["bugfix/*"]
+  head: "bugfix/*"
 
 patch:
-  head: ["hotfix/*"]
+  head: "hotfix/*"
