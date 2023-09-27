@@ -1,10 +1,10 @@
 # Apply label "feature" if head matches "feature/*"
 major:
-  head: "feature/*"
+  feature/*
 
 # Apply label "bugfix" if head matches "bugfix/*"
 minor:
-  head: "bugfix/*"
+  "bugfix/*"
 
 patch:
-  head: "hotfix/*"
+  "hotfix/*"
