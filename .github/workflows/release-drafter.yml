@@ -16,6 +16,14 @@ jobs:
       uses: release-drafter/release-drafter@v5
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: List Workspace Files
+      run: |
+        ls -al
+        find .
+    - name: Print Working Directory
+      run: |
+        pwd
+
 
     - uses: actions/upload-release-asset@v1.0.1
       env:
