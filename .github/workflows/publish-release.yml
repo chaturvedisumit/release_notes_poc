@@ -1,24 +1,16 @@
-name: Publish Release
-
+name: "Create a release after pushing a tag"
 on:
-  workflow_run:
-    workflows: ["Release Drafter"]
-    types:
-      - completed
+  push:
+    tags:
+      - [0-9]+.[0-9]+.[0-9]+ # matches numeric tags like 1.2.5
 
 jobs:
-  publish_release:
+  create-release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Publish Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            my-artifact.zip  # Add other files as needed
-          title: Release Title
-          body: Release Description
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/checkout@1.0.0
+    
+    - name: Create a release
+      uses: thomaseizinger/create-release@master
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
