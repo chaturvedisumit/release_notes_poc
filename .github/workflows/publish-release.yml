@@ -1,0 +1,24 @@
+name: Publish Release
+
+on:
+  workflow_run:
+    workflows: ["Release Drafter"]
+    types:
+      - completed
+
+jobs:
+  publish_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Publish Release
+        run: |
+          # Get the latest draft release ID using GitHub CLI
+          draft_id=$(gh release list --limit 1 --json name,url,tag_name,draft | jq -r '.[] | select(.draft == true) | .id')
+          # Publish the draft release
+          gh release edit $draft_id --draft=false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
