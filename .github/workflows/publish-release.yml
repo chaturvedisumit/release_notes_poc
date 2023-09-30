@@ -14,11 +14,11 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Publish Release
-        run: |
-          # Get the latest draft release ID using GitHub CLI
-          draft_id=$(gh release list --limit 1 --json name,url,tag_name,draft | jq -r '.[] | select(.draft == true) | .id')
-          # Publish the draft release
-          gh release edit $draft_id --draft=false
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            my-artifact.zip  # Add other files as needed
+          title: Release Title
+          body: Release Description
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
