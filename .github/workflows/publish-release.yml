@@ -13,15 +13,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Get Latest Draft Release Tag
-        id: latest_tag
-        run: |
-          tag=$(gh release list --limit 1 --json name,tag_name,draft | jq -r '.[] | select(.draft == true) | .tag_name')
-          echo "Latest draft release tag: $tag"
-          echo "::set-output name=tag::$tag"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Publish Release
         uses: softprops/action-gh-release@v1
         with:
@@ -29,6 +20,5 @@ jobs:
             my-artifact.zip  # Add other files as needed
           title: Release Title
           body: Release Description
-          tag: ${{ steps.latest_tag.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
