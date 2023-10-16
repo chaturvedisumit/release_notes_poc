@@ -1,2 +1,2 @@
-## sgtm-polaris
- Server GTM
+# sgtm-polaris
+ Server side for google tag manager
