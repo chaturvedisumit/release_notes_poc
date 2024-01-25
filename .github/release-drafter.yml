@@ -5,12 +5,12 @@ tag-template: 'v$RESOLVED_VERSION'
 categories:
   - title: '🚀 Features'
     labels:
-      - 'major'
+      - 'feature'
   - title: '🐛 Bug Fixes'
     labels:
-      - 'minor'
+      - 'bug_fix'
   - title: '🧰 Hot fix'
-    label: 'patch'
+    label: 'hot_fix'
   - title: '🧺 Miscellaneous' #Everything except ABAP
     label: 'misc'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
