@@ -1,21 +1,16 @@
 
-tag-template: 'v$MAJOR.$MINOR.$PATCH'
-
-version-template: '$MAJOR.$MINOR.$PATCH'
-name-template: '$version-template🌈'
+name-template: 'v$RESOLVED_VERSION 🌈'
+tag-template: 'v$RESOLVED_VERSION'
 
 categories:
   - title: '🚀 Features'
     labels:
-      - 'feature'
-      - 'enhancement'
+      - 'major'
   - title: '🐛 Bug Fixes'
     labels:
-      - 'fix'
-      - 'bugfix'
-      - 'bug'
+      - 'minor'
   - title: '🧰 Hot fix'
-    label: 'hotfix'
+    label: 'patch'
   - title: '🧺 Miscellaneous' #Everything except ABAP
     label: 'misc'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
@@ -23,16 +18,16 @@ change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add
 version-resolver:
   major:
     labels:
-      - 'feature'
+      - 'major'
   minor:
     labels:
-      - 'bugfix'
-      - 'fix'
+      - 'minor'
   patch:
     labels:
-      - 'hotfix'
+      - 'patch'
   default: patch
   
 template: |
   ## Changes
   $CHANGES
+  Resolved Version: $RESOLVED_VERSION
