@@ -9,6 +9,7 @@ categories:
   - title: '🐛 Bug Fixes'
     labels:
       - 'bug_fix'
+      - 'bugfix'
   - title: '🧰 Hot fix'
     label: 'hot_fix'
   - title: '🧺 Miscellaneous' #Everything except ABAP
