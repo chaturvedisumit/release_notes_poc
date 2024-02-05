@@ -77,8 +77,12 @@ def fetch_closed_pull_requests(repo):
     # Fetch closed pull requests
     closed_pr = repo.get_pulls(state='closed')
     closed_pull_request = closed_pr[0]
+    
     closed_pr = repo.get_pulls(state='closed')
     closed_pull_request = closed_pr[0]
+
+    labels = closed_pull_request.get_labels()
+    branch_name = [label.name for label in labels][0]
 
     # Organize pull requests under different headings
     feature_notes = []
@@ -88,24 +92,14 @@ def fetch_closed_pull_requests(repo):
 
 
     branch_name = closed_pull_request.base.ref
-    if branch_name.startswith("feature"):
-        feature_notes.append(f"@{pull_request.user.login} {pull_request.title} - {pull_request.body}")
-    elif branch_name.startswith("bugfix") or branch_name.startswith("bug_fix"):
-        bug_fix_notes.append(f"@{pull_request.user.login} {pull_request.title} - {pull_request.body}")
-    elif branch_name.startswith("hotfix") or branch_name.startswith("hot_fix"):
-        hot_fix_notes.append(f"@{pull_request.user.login} {pull_request.title} - {pull_request.body}")
+    if branch_name=="feature":
+        feature_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
+    elif branch_name=="bugfix" or branch_name=="bug_fix":
+        bug_fix_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
+    elif branch_name=="hotfix" or branch_name=="hot_fix":
+        hot_fix_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
     else:
-        misc_notes.append(f"@{pull_request.user.login} {pull_request.title} - {pull_request.body}")
-
-    branch_name = closed_pull_request.base.ref
-    if branch_name.startswith("feature"):
-        feature_notes.append(f"@{pull_request.user.login} {pull_request.title} - {pull_request.body}")
-    elif branch_name.startswith("bugfix") or branch_name.startswith("bug_fix"):
-        bug_fix_notes.append(f"@{pull_request.user.login} {pull_request.title} - {pull_request.body}")
-    elif branch_name.startswith("hotfix") or branch_name.startswith("hot_fix"):
-        hot_fix_notes.append(f"@{pull_request.user.login} {pull_request.title} - {pull_request.body}")
-    else:
-        misc_notes.append(f"@{pull_request.user.login} {pull_request.title} - {pull_request.body}")
+        misc_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
 
 # Construct release notes
 # Construct release notes
