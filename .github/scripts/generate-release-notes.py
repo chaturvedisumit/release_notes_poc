@@ -141,7 +141,7 @@ def create_draft_release(repo, release_notes, version):
     )
 
     # Upload release notes
-    release.update_release(body=release_notes)
+    release.edit(body=release_notes)
 
 if __name__ == "__main__":
     # Get GitHub token from environment variable
