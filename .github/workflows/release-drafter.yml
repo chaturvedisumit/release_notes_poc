@@ -3,7 +3,9 @@ name: Generate Release Notes
 on:
   pull_request:
     types: [closed]
-
+  push:
+    branches:
+        - release
 jobs:
   generate_release_notes:
     runs-on: ubuntu-latest
@@ -26,7 +28,6 @@ jobs:
           draft_tag=$(curl -sH "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
               https://api.github.com/repos/${{ github.repository }}/releases | jq -r '.[] | select(.draft) | .tag_name')
           echo "DRAFT_RELEASE_TAG_NUMBER=$draft_tag" >> $GITHUB_ENV
-          echo "Draft release tag: $draft_tag"
 
       - name: Set draft release tag output
         id: set_draft_release_tag
@@ -37,4 +38,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-
