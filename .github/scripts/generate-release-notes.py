@@ -59,10 +59,8 @@ def fetch_closed_pull_requests(repo):
 
     print("closed_pr: ", closed_pr)
 
-    closed_pull_request = closed_pr[0]
+    closed_pull_request = closed_pr
     
-    closed_pr = repo.get_pulls(state='closed')
-    closed_pull_request = closed_pr[0]
 
 
     print("closed_pull_request: ", closed_pull_request)
