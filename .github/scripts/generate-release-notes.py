@@ -18,12 +18,6 @@ def get_latest_tags(repo):
             }
     return tag_dict
 
-def increment_version(latest_tag_name):
-
-    closed_pr = repo.get_pulls(state='closed')
-    closed_pull_request = closed_pr[0]
-import re
-
 def get_latest_tags(repo):
     # Fetch all tags from the repository
     tags = repo.get_tags()
@@ -46,8 +40,8 @@ def increment_version(latest_tag_name):
     closed_pull_request = closed_pr[0]
     
     labels = closed_pull_request.get_labels()
-    branch_name = [label.name for label in labels][0]
-    print("branch_name: ",branch_name)
+    branch_name = [label.name for label in labels][0].strip()
+    print("branch_name:",branch_name)
     if branch_name=="feature":
         change_type = "major"
     elif branch_name=="bugfix" or branch_name == "bug_fix":
@@ -76,10 +70,16 @@ def increment_version(latest_tag_name):
 def fetch_closed_pull_requests(repo):
     # Fetch closed pull requests
     closed_pr = repo.get_pulls(state='closed')
+
+    print("closed_pr: ", closed_pr)
+
     closed_pull_request = closed_pr[0]
     
     closed_pr = repo.get_pulls(state='closed')
     closed_pull_request = closed_pr[0]
+
+
+    print("closed_pull_request: ", closed_pull_request)
 
     labels = closed_pull_request.get_labels()
     branch_name = [label.name for label in labels][0]
@@ -89,6 +89,7 @@ def fetch_closed_pull_requests(repo):
     bug_fix_notes = []
     hot_fix_notes = []
     misc_notes = []
+    
 
 
     branch_name = closed_pull_request.base.ref
@@ -116,7 +117,7 @@ def fetch_closed_pull_requests(repo):
     if misc_notes:
         release_notes += "### 🧺 Miscellaneous\n"
         release_notes += "\n".join(misc_notes) + "\n\n"
-
+    print (release_notes)
     return release_notes
 
 def create_draft_release(repo, release_notes, version):
@@ -129,19 +130,11 @@ def create_draft_release(repo, release_notes, version):
     )
 
     # Upload release notes
-    release.create_issue_comment(release_notes)
-
-def create_draft_release(repo, release_notes, version):
-    # Create a draft release with dynamic tagging
-    release = repo.create_git_release(
-        tag=version,
-        name=f'Release {version}',
-        message='Automated release draft',
+    release.update_release(
+        name=release.title,
+        message=release.body + '\n\n' + release_notes,
         draft=True
     )
-
-    # Upload release notes
-    release.update_release(body=release_notes)
 
 if __name__ == "__main__":
     # Get GitHub token from environment variable
