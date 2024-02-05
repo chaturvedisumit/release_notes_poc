@@ -69,12 +69,6 @@ def fetch_closed_pull_requests(repo):
     branch_name = [label.name for label in labels][0]
 
 
-    
-
-    pull_request_url = closed_pull_request.html_url
-
-    commits = closed_pull_request.get_commits()
-
     # Organize pull requests under different headings
     feature_notes = []
     bug_fix_notes = []
@@ -134,7 +128,6 @@ def fetch_closed_pull_requests(repo):
             misc_notes.append(f"Commit: {commit.sha[:7]} - {commit.commit.message}")
 
 # Construct release notes
-    release_notes = "## Changes\n\n"
     if feature_notes:
         release_notes += "### 🚀 Features\n"
         release_notes += "\n".join(feature_notes) + "\n\n"
@@ -154,6 +147,30 @@ def fetch_closed_pull_requests(repo):
     print (release_notes)
     return release_notes
 
+def group_release_info(release_notes):
+    # Split the release notes into sections based on headings
+    sections = release_notes.split("## ")[1:]
+
+    # Initialize a dictionary to store sections
+    grouped_info = {}
+
+    # Process each section
+    for section in sections:
+        # Split each section into title and content
+        section_title, section_content = section.split("\n", 1)
+
+        # Remove leading and trailing whitespace from title
+        section_title = section_title.strip()
+
+        # Add section content to the corresponding title in the dictionary
+        if section_title in grouped_info:
+            grouped_info[section_title].append(section_content)
+        else:
+            grouped_info[section_title] = [section_content]
+
+    return grouped_info
+
+
 def create_draft_release(repo, release_notes, version):
     # Create a draft release with dynamic tagging
     
@@ -168,15 +185,21 @@ def create_draft_release(repo, release_notes, version):
         message = release_body,
         draft=True
     )
+
+    release_notes_merged = release.body + '\n\n' + release_notes
+
+    message = group_release_info(release_notes_merged)
+
     # Upload release notes
     release.update_release(
         name=release.title,
-        message=release.body + '\n\n' + release_notes,
+        message=message,
         draft=True
     )
 
     # Delete the old release
     latest_release.delete_release()
+
 
 
 if __name__ == "__main__":
@@ -211,6 +234,8 @@ if __name__ == "__main__":
     release_notes = fetch_closed_pull_requests(repo)
 
     # Create a new tag with the updated version
-    create_draft_release(repo, release_notes, new_version)
+    release_notes_final = create_draft_release(repo, release_notes, new_version)
+
+    group_release_info(release_notes_final)
 
     print(f"Draft release {new_version} created successfully.")
