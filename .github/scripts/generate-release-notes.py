@@ -45,13 +45,14 @@ def increment_version(latest_tag_name):
     closed_pr = repo.get_pulls(state='closed')
     closed_pull_request = closed_pr[0]
     
-    branch_name = closed_pull_request.get_labels()
+    labels = closed_pull_request.get_labels()
+    branch_name = [label.name for label in labels][0]
     print("branch_name: ",branch_name)
-    if branch_name.startswith("feature"):
+    if branch_name=="feature":
         change_type = "major"
-    elif branch_name.startswith("bugfix") or branch_name.startswith("bug_fix"):
+    elif branch_name=="bugfix" or branch_name == "bug_fix":
        change_type = "minor"
-    elif branch_name.startswith("hotfix") or branch_name.startswith("hot_fix"):
+    elif branch_name=="hotfix" or branch_name=="hot_fix":
        change_type = "patch"
        
     version_numbers = latest_tag_name[1:].split('.')
