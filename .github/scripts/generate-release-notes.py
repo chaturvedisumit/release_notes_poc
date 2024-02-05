@@ -165,7 +165,7 @@ def create_draft_release(repo, release_notes, version):
     release = repo.create_git_release(
         tag=version,
         name=f'Release {version}',
-        message='Automated release draft',
+        message = release.body + '\n\n' + release_notes,
         draft=True
     )
 
