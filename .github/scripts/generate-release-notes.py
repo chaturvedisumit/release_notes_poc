@@ -45,8 +45,8 @@ def increment_version(latest_tag_name):
     closed_pr = repo.get_pulls(state='closed')
     closed_pull_request = closed_pr[0]
     
-    branch_name = closed_pull_request.labels
-    print(branch_name)
+    branch_name = closed_pull_request.get_labels()
+    print("branch_name: ",branch_name)
     if branch_name.startswith("feature"):
         change_type = "major"
     elif branch_name.startswith("bugfix") or branch_name.startswith("bug_fix"):
@@ -160,7 +160,7 @@ if __name__ == "__main__":
 
     # Fetch the latest tags and their versions
     tags = repo.get_tags()
-    print(tags)
+    print("tags: ",tags)
 
 
     # Sort the tags based on their creation date (tag.commit.commit.author.date)
