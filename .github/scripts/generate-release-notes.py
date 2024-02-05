@@ -18,12 +18,6 @@ def get_latest_tags(repo):
             }
     return tag_dict
 
-def increment_version(latest_tag_name):
-
-    closed_pr = repo.get_pulls(state='closed')
-    closed_pull_request = closed_pr[0]
-import re
-
 def get_latest_tags(repo):
     # Fetch all tags from the repository
     tags = repo.get_tags()
@@ -46,8 +40,8 @@ def increment_version(latest_tag_name):
     closed_pull_request = closed_pr[0]
     
     labels = closed_pull_request.get_labels()
-    branch_name = [label.name for label in labels][0]
-    print("branch_name: ",branch_name)
+    branch_name = [label.name for label in labels][0].strip()
+    print("branch_name:",branch_name)
     if branch_name=="feature":
         change_type = "major"
     elif branch_name=="bugfix" or branch_name == "bug_fix":
@@ -129,7 +123,7 @@ def create_draft_release(repo, release_notes, version):
     )
 
     # Upload release notes
-    release.create_issue_comment(release_notes)
+    release.edit(body=release_notes)
 
 if __name__ == "__main__":
     # Get GitHub token from environment variable
