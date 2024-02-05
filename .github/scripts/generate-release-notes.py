@@ -155,6 +155,7 @@ if __name__ == "__main__":
 
     # Fetch the latest tags and their versions
     tags = repo.get_tags()
+    print(tags)
 
 
     # Sort the tags based on their creation date (tag.commit.commit.author.date)
