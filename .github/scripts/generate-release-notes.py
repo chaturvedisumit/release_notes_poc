@@ -131,18 +131,6 @@ def create_draft_release(repo, release_notes, version):
     # Upload release notes
     release.create_issue_comment(release_notes)
 
-def create_draft_release(repo, release_notes, version):
-    # Create a draft release with dynamic tagging
-    release = repo.create_git_release(
-        tag=version,
-        name=f'Release {version}',
-        message='Automated release draft',
-        draft=True
-    )
-
-    # Upload release notes
-    release.edit(body=release_notes)
-
 if __name__ == "__main__":
     # Get GitHub token from environment variable
     github_token = os.environ.get('GITHUB_TOKEN')
