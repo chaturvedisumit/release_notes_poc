@@ -116,7 +116,7 @@ def fetch_closed_pull_requests(repo):
     if misc_notes:
         release_notes += "### 🧺 Miscellaneous\n"
         release_notes += "\n".join(misc_notes) + "\n\n"
-
+    print (release_notes)
     return release_notes
 
 def create_draft_release(repo, release_notes, version):
