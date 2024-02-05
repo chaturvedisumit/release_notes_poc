@@ -90,9 +90,6 @@ def fetch_closed_pull_requests(repo):
     hot_fix_notes = []
     misc_notes = []
     
-
-
-    branch_name = closed_pull_request.base.ref
     if branch_name=="feature":
         feature_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
     elif branch_name=="bugfix" or branch_name=="bug_fix":
@@ -170,4 +167,4 @@ if __name__ == "__main__":
     create_draft_release(repo, release_notes, new_version)
 
     print(f"Draft release {new_version} created successfully.")
-    
+
