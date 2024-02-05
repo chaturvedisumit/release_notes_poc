@@ -3,7 +3,9 @@ name: Generate Release Notes
 on:
   pull_request:
     types: [closed]
-
+  push:
+    branches:
+        - release
 jobs:
   generate_release_notes:
     runs-on: ubuntu-latest
