@@ -14,7 +14,7 @@ categories:
     label: 'hot_fix'
   - title: '🧺 Miscellaneous' #Everything except ABAP
     label: 'misc'
-change-template: '- @$AUTHOR (#$NUMBER)'
+change-template: '- $TITLE $BODY @$AUTHOR (#$NUMBER)'
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 version-resolver:
   major:
