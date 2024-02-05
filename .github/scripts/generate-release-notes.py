@@ -159,13 +159,14 @@ if __name__ == "__main__":
 
 
     # Sort the tags based on their creation date (tag.commit.commit.author.date)
-    if not tags:
-        latest_tag_name = 'v0.0.0'
-    else:
+    
+    try:
         sorted_tags = sorted(tags, key=lambda tag: tag.commit.commit.author.date, reverse=True)
         # Get the name of the latest (most recent) tag
         latest_tag_name = sorted_tags[0].name
-
+    except:
+        latest_tag_name = 'v0.0.0'
+    
     # Increment the version based on the type of change
     new_version = increment_version(latest_tag_name)  # Example: Incrementing minor version
 
