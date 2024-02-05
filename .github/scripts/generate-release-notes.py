@@ -18,7 +18,6 @@ def get_latest_tags(repo):
             }
     return tag_dict
 
-
 def increment_version(latest_tag_name):
 
     closed_pr = repo.get_pulls(state='closed')
@@ -26,6 +25,7 @@ def increment_version(latest_tag_name):
     
     labels = closed_pull_request.get_labels()
     branch_name = [label.name for label in labels][0].strip()
+    
     print("branch_name:",branch_name)
     if branch_name=="feature":
         change_type = "major"
@@ -154,7 +154,7 @@ def fetch_closed_pull_requests(repo):
     if misc_notes:
         release_notes += "### 🧺 Miscellaneous\n"
         release_notes += "\n".join(misc_notes) + "\n\n"
-        
+
     print (release_notes)
     return release_notes
 
