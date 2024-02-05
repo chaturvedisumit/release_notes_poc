@@ -32,8 +32,8 @@ jobs:
         run: echo "::set-output name=DRAFT_RELEASE_TAG_NUMBER::$DRAFT_RELEASE_TAG_NUMBER"
 
       - name: Run script
-        run: python scripts/generate-release-notes.py
+        run: python .github/scripts/generate-release-notes.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-          
+
