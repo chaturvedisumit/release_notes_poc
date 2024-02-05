@@ -162,8 +162,6 @@ def fetch_closed_pull_requests(repo):
 
 def create_draft_release(repo, release_notes, version):
     # Create a draft release with dynamic tagging
-
-    release = repo.get_releases()
     
 
     # release = repo.create_git_release(
