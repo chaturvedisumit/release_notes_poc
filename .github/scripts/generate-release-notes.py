@@ -149,7 +149,7 @@ def fetch_closed_pull_requests(repo):
 
 def group_release_info(release_notes):
     # Split the release notes into sections based on headings
-    sections = release_notes.split("## ")[1:]
+    sections = release_notes.split("###")[1:]
 
     # Initialize a dictionary to store sections
     grouped_info = {}
