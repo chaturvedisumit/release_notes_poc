@@ -8,7 +8,7 @@ on:
 
 jobs:
   update_release_draft:
-    runs-on: [self-hosted, Linux, size/small, emt]
+    runs-on: [ubuntu-latest]
     steps:
       - name: Set GHE_HOST
         run: |
