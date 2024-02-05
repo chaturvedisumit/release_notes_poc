@@ -14,10 +14,18 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Fetch Commit Messages
+    - name: Fetch PRs
+        id: fetch_prs
+        run: |
+          git fetch origin +refs/pull/*/merge:refs/remotes/origin/pr/*
+          git for-each-ref --format='%(refname:short)' refs/remotes/origin/pr > prs.txt
+
+    - name: Fetch and append commit messages
       id: fetch_commit_messages
       run: |
-        git log --pretty=format:"- %s @%an (#%h)" > commit_messages.txt 
+        while read -r pr; do
+          git log --pretty=format:"- %s @%an (#$pr)" "origin/pr/$pr" >> commit_messages.txt
+        done < prs.txt
 
     - name: Create Draft Release
       id: create_release
