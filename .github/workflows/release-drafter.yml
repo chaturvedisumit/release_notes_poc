@@ -1,85 +1,18 @@
-name: Generate Release Notes and Draft Release
+name: Release Drafter
 
 on:
-  pull_request:
-    types: [closed]
+  push:
+    # branches to consider in the event; optional, defaults to all
+    branches:
+      - release
 
 jobs:
-  release_notes_and_draft_release:
-    runs-on: ubuntu-latest
-
+  update_release_draft:
+    runs-on: [self-hosted, Linux, size/small, emt]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Determine Version
-        id: determine_version
+      - name: Set GHE_HOST
         run: |
-          BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}")
-          if [[ $BRANCH_NAME == "feature"* ]]; then
-            version=$(echo $BRANCH_NAME | grep -o -E '[0-9]+\.[0-9]+\.[0-9]+')
-            if [ -z "$version" ]; then
-              echo "v1.0.0"
-            else
-              major=$(echo $version | cut -d'.' -f1)
-              minor=$(echo $version | cut -d'.' -f2)
-              patch=$(echo $version | cut -d'.' -f3)
-              echo "v$major.$minor.$((patch + 1))"
-            fi
-          elif [[ $BRANCH_NAME == "hotfix"* ]]; then
-            version=$(echo $BRANCH_NAME | grep -o -E '[0-9]+\.[0-9]+\.[0-9]+')
-            if [ -z "$version" ]; then
-              echo "v0.1.1"
-            else
-              major=$(echo $version | cut -d'.' -f1)
-              minor=$(echo $version | cut -d'.' -f2)
-              patch=$(echo $version | cut -d'.' -f3)
-              echo "v$major.$minor.$((patch + 1))"
-            fi
-          elif [[ $BRANCH_NAME == "release"* ]]; then
-            version=$(echo $BRANCH_NAME | grep -o -E '[0-9]+\.[0-9]+\.[0-9]+')
-            if [ -z "$version" ]; then
-              echo "v2.0.0"
-            else
-              major=$(echo $version | cut -d'.' -f1)
-              minor=$(echo $version | cut -d'.' -f2)
-              patch=$(echo $version | cut -d'.' -f3)
-              echo "v$major.$minor.$((patch + 1))"
-            fi
-          else
-            echo "v0.1.0"
-          fi
-        shell: bash
-
-      - name: Generate Release Notes
-        id: release_notes
-        uses: actions/github-script@v4
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const { data: commits } = await github.repos.listCommits({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: process.env.GITHUB_SHA
-            });
-
-            const releaseNotes = commits.data.map(commit => `- ${commit.commit.message}`).join('\n');
-
-            console.log(releaseNotes);
-
-            // Output release notes as an output
-            return { releaseNotes: releaseNotes };
-
-      - name: Create Draft Release
-        id: create_release
-        uses: actions/create-release@v1
+         echo "GHE_HOST=${GITHUB_SERVER_URL##https:\/\/}" >> $GITHUB_ENV
+      - uses: release-drafter/release-drafter@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.determine_version.outputs.stdout }}
-          release_name: Release ${{ steps.determine_version.outputs.stdout }}
-          draft: true
-          body: |
-            Release Notes:
-
-            ${{ steps.release_notes.outputs.releaseNotes }}
