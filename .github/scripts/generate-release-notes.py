@@ -45,7 +45,7 @@ def increment_version(latest_tag_name):
     closed_pr = repo.get_pulls(state='closed')
     closed_pull_request = closed_pr[0]
     
-    branch_name = closed_pull_request.base.ref
+    branch_name = closed_pull_request.labels
     print(branch_name)
     if branch_name.startswith("feature"):
         change_type = "major"
