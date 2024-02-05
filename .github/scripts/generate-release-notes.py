@@ -205,7 +205,7 @@ if __name__ == "__main__":
     #     # Get the name of the latest (most recent) tag
     #     latest_tag_name = sorted_tags[0].name
     # except:
-    #     latest_tag_name = 'v0.0.0'
+    #     latest_tag_name = 'v0.0.0' 
     
     latest_tag_name= os.environ.get('DRAFT_RELEASE_TAG_NUMBER')
     # Increment the version based on the type of change
