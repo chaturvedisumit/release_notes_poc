@@ -68,7 +68,6 @@ def increment_version(latest_tag_name):
     return new_tag_name
 
 def fetch_closed_pull_requests(repo):
-def fetch_closed_pull_requests(repo):
     # Fetch closed pull requests
     closed_pr = repo.get_pulls(state='closed')
     closed_pull_request = closed_pr[0]
