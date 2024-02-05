@@ -83,8 +83,6 @@ def fetch_closed_pull_requests(repo):
     
     if branch_name=="feature":
         feature_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
-        # Fetch the URL of the pull request
-
 
         # Append the link to the pull request to your feature_notes
         feature_notes.append(f"Pull Request: {pull_request_url}")
@@ -111,10 +109,6 @@ def fetch_closed_pull_requests(repo):
 
 
     elif branch_name=="hotfix" or branch_name=="hot_fix":
-
-        hot_fix_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
-
-        hot_fix_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
 
         hot_fix_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
 
@@ -165,6 +159,8 @@ def create_draft_release(repo, release_notes, version):
     
     latest_release = repo.get_releases()[0]
     release_body = latest_release.body
+    print(type(release_body))
+    print(release_body)
 
     release = repo.create_git_release(
         tag=version,
