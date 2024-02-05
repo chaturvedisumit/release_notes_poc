@@ -59,7 +59,7 @@ def fetch_closed_pull_requests(repo):
 
     print("closed_pr: ", closed_pr)
 
-    closed_pull_request = closed_pr
+    closed_pull_request = closed_pr[0]
     
 
 
@@ -67,6 +67,9 @@ def fetch_closed_pull_requests(repo):
 
     labels = closed_pull_request.get_labels()
     branch_name = [label.name for label in labels][0]
+
+
+    
 
     pull_request_url = closed_pull_request.html_url
 
