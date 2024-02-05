@@ -1,33 +1,85 @@
-name: Release Drafter
+name: Generate Release Notes and Draft Release
 
 on:
-  push:
-    # branches to consider in the event; optional, defaults to all
-    branches:
-      - release
+  pull_request:
+    types: [closed]
 
 jobs:
-  update_release_draft:
+  release_notes_and_draft_release:
     runs-on: ubuntu-latest
+
     steps:
-      # Drafts your next Release notes as Pull Requests are merged into "master"
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Fetch PRs and Commit Messages
-      id: fetch_prs_and_commit_messages
-      run: |
-        git fetch origin "+refs/pull/*/head:refs/remotes/origin/pr/*"
-        git for-each-ref --format='%(refname:short)' refs/remotes/origin/pr > prs.txt
+      - name: Determine Version
+        id: determine_version
+        run: |
+          BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}")
+          if [[ $BRANCH_NAME == "feature"* ]]; then
+            version=$(echo $BRANCH_NAME | grep -o -E '[0-9]+\.[0-9]+\.[0-9]+')
+            if [ -z "$version" ]; then
+              echo "v1.0.0"
+            else
+              major=$(echo $version | cut -d'.' -f1)
+              minor=$(echo $version | cut -d'.' -f2)
+              patch=$(echo $version | cut -d'.' -f3)
+              echo "v$major.$minor.$((patch + 1))"
+            fi
+          elif [[ $BRANCH_NAME == "hotfix"* ]]; then
+            version=$(echo $BRANCH_NAME | grep -o -E '[0-9]+\.[0-9]+\.[0-9]+')
+            if [ -z "$version" ]; then
+              echo "v0.1.1"
+            else
+              major=$(echo $version | cut -d'.' -f1)
+              minor=$(echo $version | cut -d'.' -f2)
+              patch=$(echo $version | cut -d'.' -f3)
+              echo "v$major.$minor.$((patch + 1))"
+            fi
+          elif [[ $BRANCH_NAME == "release"* ]]; then
+            version=$(echo $BRANCH_NAME | grep -o -E '[0-9]+\.[0-9]+\.[0-9]+')
+            if [ -z "$version" ]; then
+              echo "v2.0.0"
+            else
+              major=$(echo $version | cut -d'.' -f1)
+              minor=$(echo $version | cut -d'.' -f2)
+              patch=$(echo $version | cut -d'.' -f3)
+              echo "v$major.$minor.$((patch + 1))"
+            fi
+          else
+            echo "v0.1.0"
+          fi
+        shell: bash
 
-        while read -r pr; do
-          git log --pretty=format:"- %s @%an (#${pr#*/})" "$pr" >> commit_messages.txt
-        done < prs.txt
+      - name: Generate Release Notes
+        id: release_notes
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: commits } = await github.repos.listCommits({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: process.env.GITHUB_SHA
+            });
 
-    - name: Create Draft Release
-      id: create_release
-      uses: release-drafter/release-drafter@v5
-      with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          additional-files: commit_messages.txt
-          commit-message: true
+            const releaseNotes = commits.data.map(commit => `- ${commit.commit.message}`).join('\n');
+
+            console.log(releaseNotes);
+
+            // Output release notes as an output
+            return { releaseNotes: releaseNotes };
+
+      - name: Create Draft Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.determine_version.outputs.stdout }}
+          release_name: Release ${{ steps.determine_version.outputs.stdout }}
+          draft: true
+          body: |
+            Release Notes:
+
+            ${{ steps.release_notes.outputs.releaseNotes }}
