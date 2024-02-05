@@ -169,7 +169,7 @@ def create_draft_release(repo, release_notes, version):
     release = repo.create_git_release(
         tag=version,
         name=f'Release {version}',
-        message = release_body + '\n\n' + release_notes,
+        message = release_body,
         draft=True
     )
     # Upload release notes
