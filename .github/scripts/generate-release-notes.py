@@ -53,18 +53,21 @@ def increment_version(latest_tag_name):
     elif branch_name.startswith("hotfix") or branch_name.startswith("hot_fix"):
        change_type = "patch"
        
-    new_tag_name = f"v{int(latest_tag_name.split('.')[0]) + (1 if change_type == 'major' else 0)}.{int(latest_tag_name.split('.')[1]) + (1 if change_type == 'minor' else 0)}.{int(latest_tag_name.split('.')[2]) + (1 if change_type == 'patch' else 0)}"
-    branch_name = closed_pull_request.base.ref
-    if branch_name.startswith("feature"):
-        change_type = "major"
-    elif branch_name.startswith("bugfix") or branch_name.startswith("bug_fix"):
-       change_type = "minor"
-    elif branch_name.startswith("hotfix") or branch_name.startswith("hot_fix"):
-       change_type = "patch"
-       
-    new_tag_name = f"v{int(latest_tag_name.split('.')[0]) + (1 if change_type == 'major' else 0)}.{int(latest_tag_name.split('.')[1]) + (1 if change_type == 'minor' else 0)}.{int(latest_tag_name.split('.')[2]) + (1 if change_type == 'patch' else 0)}"
+    version_numbers = latest_tag_name[1:].split('.')
 
-    return new_tag_name
+    # Increment the version numbers based on the change type
+    major_increment = 1 if change_type == 'major' else 0
+    minor_increment = 1 if change_type == 'minor' else 0
+    patch_increment = 1 if change_type == 'patch' else 0
+
+    # Increment the version numbers accordingly
+    major_number = int(version_numbers[0]) + major_increment
+    minor_number = int(version_numbers[1]) + minor_increment
+    patch_number = int(version_numbers[2]) + patch_increment
+
+    # Construct the new tag name
+    new_tag_name = f"v{major_number}.{minor_number}.{patch_number}"
+    
     return new_tag_name
 
 def fetch_closed_pull_requests(repo):
