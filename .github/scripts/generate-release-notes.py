@@ -89,6 +89,7 @@ def fetch_closed_pull_requests(repo):
     bug_fix_notes = []
     hot_fix_notes = []
     misc_notes = []
+    
 
 
     branch_name = closed_pull_request.base.ref
