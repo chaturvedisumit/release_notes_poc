@@ -68,6 +68,7 @@ def increment_version(latest_tag_name):
 
     # Construct the new tag name
     new_tag_name = f"v{major_number}.{minor_number}.{patch_number}"
+    
 
     return new_tag_name
 
