@@ -163,21 +163,24 @@ def fetch_closed_pull_requests(repo):
 def create_draft_release(repo, release_notes, version):
     # Create a draft release with dynamic tagging
     
-
-    # release = repo.create_git_release(
-    #     tag=version,
-    #     name=f'Release {version}',
-    #     message = release.body + '\n\n' + release_notes,
-    #     draft=True
-    # )
-
+    latest_release = repo.get_latest_release()
+    release_body = latest_release.body
+    
+    release = repo.create_git_release(
+        tag=version,
+        name=f'Release {version}',
+        message = release_body + '\n\n' + release_notes,
+        draft=True
+    )
     # Upload release notes
-    release = repo.get_releases()
     release.update_release(
         name=release.title,
         message=release.body + '\n\n' + release_notes,
         draft=True
     )
+
+    # Delete the old release
+    latest_release.delete_release()
 
 
 if __name__ == "__main__":
