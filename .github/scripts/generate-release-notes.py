@@ -205,7 +205,6 @@ def create_draft_release(repo, release_notes, version):
     latest_release.update_release(
         name=latest_release.title,
         message=formatted_message,
-        tag=version,
         draft=True
     )
 
