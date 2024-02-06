@@ -193,18 +193,20 @@ def create_draft_release(repo, release_notes, version):
     # Merge the old body with the new release notes
     merged_message = release_body + '\n\n' + release_notes
 
-    print("merged_message",merged_message)
-    
+    print("merged_message:", merged_message)
+
     # Format the merged message using group_release_info()
     formatted_message = ""
-    for section, notes in group_release_info(merged_message).items():
+    grouped_info = group_release_info(merged_message)
+    print("grouped_info:", grouped_info)
+    for section, notes in grouped_info.items():
         formatted_message += f"## {section}\n"
         for note in notes:
             formatted_message += f"- {note}\n"
         formatted_message += "\n"
 
+    print("formatted_message:", formatted_message)
 
-    print("formatted_message", formatted_message)
 
     # Update the release with the formatted message and keep it as a draft
     latest_release.update_release(
