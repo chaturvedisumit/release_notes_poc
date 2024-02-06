@@ -230,7 +230,7 @@ if __name__ == "__main__":
     latest_tag = os.environ.get('LATEST_TAG')
     
     # Increment the version based on the type of change
-    if DRAFT_RELEASE_TAG_NUMBER <> null :
+    if latest_draft_tag <> null :
         new_version = increment_version(latest_draft_tag)  # Example: Incrementing minor version
     elif latest_tag <> null :
         new_version = increment_version(latest_tag)
