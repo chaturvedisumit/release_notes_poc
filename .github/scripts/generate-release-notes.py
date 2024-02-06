@@ -239,7 +239,30 @@ if __name__ == "__main__":
     # Create a new tag with the updated version
     release_notes_final = create_draft_release(repo, release_notes, new_version)
 
-    group_release_info(release_notes_final)
+    draft_release_notes = group_release_info(release_notes_final)
 
+      # Get the existing draft release to be deleted
+    existing_draft_release = None
+    for release in repo.get_releases():
+        if release.tag_name == new_version and release.draft:
+            existing_draft_release = release
+            break
+
+    # If an existing draft release is found, create a new draft release and delete the existing one
+    if existing_draft_release:
+        # Create a new draft release from the updated one
+        new_draft_release = repo.create_git_release(
+            tag=new_version,
+            name=existing_draft_release.title,
+            message=release_notes_final,
+            draft=True
+        )
+
+        # Delete the existing draft release
+        existing_draft_release.delete_release()
+
+        print(f"Draft release {new_version} created successfully.")
+    else:
+        print(f"No existing draft release found for {new_version}.")
     print(f"Draft release {new_version} created successfully.")
     
