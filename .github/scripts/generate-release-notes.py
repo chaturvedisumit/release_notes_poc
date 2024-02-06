@@ -226,9 +226,16 @@ if __name__ == "__main__":
     tags = repo.get_tags()
     print("tags: ", tags)
 
-    latest_tag_name = os.environ.get('DRAFT_RELEASE_TAG_NUMBER')
+    latest_draft_tag = os.environ.get('DRAFT_RELEASE_TAG_NUMBER')
+    latest_tag = os.environ.get('LATEST_TAG')
+    
     # Increment the version based on the type of change
-    new_version = increment_version(latest_tag_name)  # Example: Incrementing minor version
+    if DRAFT_RELEASE_TAG_NUMBER <> null :
+        new_version = increment_version(latest_draft_tag)  # Example: Incrementing minor version
+    elif latest_tag <> null :
+        new_version = increment_version(latest_tag)
+    else:
+        new_version = "v0.0.0"
 
     # Fetch closed pull requests and generate release notes
     release_notes = fetch_closed_pull_requests(repo)
