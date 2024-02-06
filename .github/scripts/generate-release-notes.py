@@ -186,6 +186,8 @@ def create_draft_release(repo, release_notes, version):
 
     # Merge the old body with the new release notes
     merged_message = release_body + '\n\n' + release_notes
+
+    print("merged_message",merged_message)
     
     # Format the merged message using group_release_info()
     formatted_message = ""
