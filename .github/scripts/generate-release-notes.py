@@ -173,6 +173,8 @@ def group_release_info(release_notes):
 
 def create_draft_release(repo, release_notes, version):
     # Get the latest release
+    print(repo.get_releases())
+
     latest_release = repo.get_releases()[0]
 
     # Get the body of the latest release
