@@ -3,23 +3,6 @@ from github import Github
 import re
 
 
-def get_latest_tags(repo):
-    # Fetch all tags from the repository
-    tags = repo.get_tags()
-    tag_dict = {}
-    for tag in tags:
-        # Parse the version from the tag name
-        match = re.match(r'v(\d+)\.(\d+)\.(\d+)', tag.name)
-        if match:
-            major, minor, patch = map(int, match.groups())
-            tag_dict[tag.name] = {
-                'major': major,
-                'minor': minor,
-                'patch': patch
-            }
-    return tag_dict
-
-
 def increment_version(latest_tag_name):
 
     closed_pr = repo.get_pulls(state='closed')
@@ -236,6 +219,8 @@ if __name__ == "__main__":
 
     # Get the repository
     repo = g.get_repo(os.environ.get('GITHUB_REPOSITORY'))
+
+    print("repo",repo)
 
     # Fetch the latest tags and their versions
     tags = repo.get_tags()
