@@ -177,34 +177,31 @@ def group_release_info(release_notes):
 
 
 def create_draft_release(repo, release_notes, version):
-    # Create a draft release with dynamic tagging
-    
+    # Get the latest release
     latest_release = repo.get_releases()[0]
-    release_body = latest_release.body
-    print(type(release_body))
-    print("newer-", release_body)
 
-    release = repo.create_git_release(
+    # Get the body of the latest release
+    release_body = latest_release.body
+
+    # Create a new draft release with the provided version and release notes
+    new_release = repo.create_git_release(
         tag=version,
         name=f'Release {version}',
-        message = release_body,
+        message=release_body + '\n\n' + release_notes,  # Merge the old body and new notes
         draft=True
     )
 
-    release_notes_merged = release.body + '\n\n' + release_notes
-
-    message = group_release_info(release_notes_merged)
-
+    # Construct the formatted message for the new release
     formatted_message = ""
-    for section, notes in message.items():
+    for section, notes in group_release_info(release_notes).items():
         formatted_message += f"## {section}\n"
         for note in notes:
             formatted_message += f"- {note}\n"
         formatted_message += "\n"
 
-    # Upload release notes
-    release.update_release(
-        name=release.title,
+    # Update the release with the formatted message
+    new_release.update_release(
+        name=new_release.title,
         message=formatted_message,
         draft=True
     )
@@ -213,6 +210,7 @@ def create_draft_release(repo, release_notes, version):
     latest_release.delete_release()
 
     return formatted_message
+
 
 
 if __name__ == "__main__":
