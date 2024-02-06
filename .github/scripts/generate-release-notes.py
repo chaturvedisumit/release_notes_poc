@@ -194,13 +194,13 @@ def create_draft_release(repo, release_notes, version):
     release_notes_merged = release.body + '\n\n' + release_notes
 
     message = group_release_info(release_notes_merged)
+
     formatted_message = ""
     for section, notes in message.items():
         formatted_message += f"## {section}\n"
         for note in notes:
             formatted_message += f"- {note}\n"
         formatted_message += "\n"
-    print("************************message*******************************", formatted_message)
 
     # Upload release notes
     release.update_release(
@@ -230,16 +230,6 @@ if __name__ == "__main__":
     tags = repo.get_tags()
     print("tags: ",tags)
 
-
-    # Sort the tags based on their creation date (tag.commit.commit.author.date)
-    
-    # try:
-    #     sorted_tags = sorted(tags, key=lambda tag: tag.commit.commit.author.date, reverse=True)
-    #     # Get the name of the latest (most recent) tag
-    #     latest_tag_name = sorted_tags[0].name
-    # except:
-    #     latest_tag_name = 'v0.0.0' 
-    
     latest_tag_name= os.environ.get('DRAFT_RELEASE_TAG_NUMBER')
     # Increment the version based on the type of change
     new_version = increment_version(latest_tag_name)  # Example: Incrementing minor version
