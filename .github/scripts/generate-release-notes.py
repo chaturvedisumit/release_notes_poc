@@ -163,10 +163,9 @@ def group_release_info(release_notes):
     # Process each section
     for section in sections:
         # Split each section into title and content
-        section_title, section_content = section.split("\n", 1)
-
-        # Remove leading and trailing whitespace from title
-        section_title = section_title.strip()
+        lines = section.strip().split('\n')
+        section_title = lines[0].strip()
+        section_content = '\n'.join(lines[1:]).strip()
 
         # Add section content to the corresponding title in the dictionary
         if section_title in grouped_info:
@@ -175,6 +174,7 @@ def group_release_info(release_notes):
             grouped_info[section_title] = [section_content]
 
     return grouped_info
+
 
 
 def create_draft_release(repo, release_notes, version):
