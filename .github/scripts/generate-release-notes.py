@@ -195,7 +195,12 @@ def create_draft_release(repo, release_notes, version):
 
     message = group_release_info(release_notes_merged)
 
-
+    formatted_message = ""
+    for section, notes in message.items():
+        formatted_message += f"## {section}\n"
+        for note in notes:
+            formatted_message += f"- {note}\n"
+        formatted_message += "\n"
 
     # Upload release notes
     release.update_release(
@@ -206,6 +211,8 @@ def create_draft_release(repo, release_notes, version):
 
     # Delete the old release
     latest_release.delete_release()
+
+    return formatted_message
 
 
 
