@@ -205,7 +205,7 @@ def create_draft_release(repo, release_notes, version):
     # Upload release notes
     release.update_release(
         name=release.title,
-        message=message,
+        message=formatted_message,
         draft=True
     )
 
