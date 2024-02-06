@@ -195,6 +195,9 @@ def create_draft_release(repo, release_notes, version):
             formatted_message += f"- {note}\n"
         formatted_message += "\n"
 
+
+    print("formatted_message", formatted_message)
+
     # Update the release with the formatted message and keep it as a draft
     latest_release.update_release(
         name=latest_release.title,
