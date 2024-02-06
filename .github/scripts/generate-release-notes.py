@@ -208,11 +208,18 @@ def create_draft_release(repo, release_notes, version):
 
 
     # Update the release with the formatted message and keep it as a draft
-    latest_release.update_release(
+    if latest_release == "" :
+        new_draft_release = repo.create_git_release(
+        tag=new_version,
         name=version,
         message=formatted_message,
-        draft=True
-    )
+        draft=True)
+    else:
+        latest_release.update_release(
+            name=version,
+            message=formatted_message,
+            draft=True
+        )
 
     return formatted_message
 
