@@ -154,28 +154,25 @@ def fetch_closed_pull_requests(repo):
     return release_notes
 
 def group_release_info(release_notes):
-    # Split the release notes into sections based on headings
-    sections = release_notes.split("###")[1:]
+    # Split the release notes into sections based on section titles
+    sections = re.split(r'(?:^|\n)#{2,3}\s+', release_notes.strip())
 
     # Initialize a dictionary to store sections
     grouped_info = {}
 
     # Process each section
     for section in sections:
-        # Split each section into title and content
-        lines = section.strip().split('\n', 1)
-        print("Lines:", lines)
-        section_title = lines[0].strip()
-        section_content = lines[1].strip() if len(lines) > 1 else ""
+        if section.strip():
+            # Split each section into title and content
+            lines = section.strip().split('\n')
+            section_title = lines[0].strip()
+            section_content = '\n'.join(lines[1:]).strip()
 
-        print("Title:", section_title)
-        print("Content:", section_content)
-
-        # Add section content to the corresponding title in the dictionary
-        if section_title in grouped_info:
-            grouped_info[section_title].append(section_content)
-        else:
-            grouped_info[section_title] = [section_content]
+            # Add section content to the corresponding title in the dictionary
+            if section_title in grouped_info:
+                grouped_info[section_title].append(section_content)
+            else:
+                grouped_info[section_title] = [section_content]
 
     return grouped_info
 
@@ -199,11 +196,14 @@ def create_draft_release(repo, release_notes, version):
     formatted_message = ""
     grouped_info = group_release_info(merged_message)
     print("grouped_info:", grouped_info)
+    # Format the merged message using group_release_info()
+    formatted_message = ""
     for section, notes in grouped_info.items():
         formatted_message += f"## {section}\n"
         for note in notes:
             formatted_message += f"- {note}\n"
         formatted_message += "\n"
+
 
     print("formatted_message:", formatted_message)
 
