@@ -175,7 +175,10 @@ def create_draft_release(repo, release_notes, version):
     # Get the latest release
     print(repo.get_releases())
 
-    latest_release = repo.get_releases()[0]
+    try:
+        latest_release = repo.get_releases()[0]
+    except:
+        latest_release = ""
 
     # Get the body of the latest release
     release_body = latest_release.body
