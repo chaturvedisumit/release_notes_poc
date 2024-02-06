@@ -74,6 +74,10 @@ def fetch_closed_pull_requests(repo):
     bug_fix_notes = []
     hot_fix_notes = []
     misc_notes = []
+
+    pull_request_url = closed_pull_request.html_url
+
+    commits = closed_pull_request.get_commits()
     
     if branch_name=="feature":
         feature_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
