@@ -140,7 +140,7 @@ def fetch_closed_pull_requests(repo):
     if misc_notes:
         release_notes += "### 🧺 Miscellaneous\n"
         release_notes += "\n".join(misc_notes) + "\n\n"
-
+    print("hot_fix_notes",hot_fix_notes)
     print ("older:",release_notes)
     return release_notes
 
