@@ -239,25 +239,23 @@ if __name__ == "__main__":
     release_notes_final = create_draft_release(repo, release_notes, new_version)
 
     # Check if an existing draft release exists
-    existing_draft_release = None
-    for release in repo.get_releases():
-        if release.tag_name == new_version and release.draft:
-            existing_draft_release = release
-            break
-    print("existing_draft_release",existing_draft_release)
+    latest_release = repo.get_releases()[0]
+    
+    
     # If an existing draft release is found, create a new draft release and delete the existing one
-    if existing_draft_release:
-        # Create a new draft release from the updated one
-        new_draft_release = repo.create_git_release(
-            tag=new_version,
-            name=existing_draft_release.title,
-            message=release_notes_final,
-            draft=True
-        )
+   
+    # Create a new draft release from the updated one
+    new_draft_release = repo.create_git_release(
+        tag=new_version,
+        name="release notes",
+        message=release_notes_final,
+        draft=True
+    )
+
+    print("new_draft_release", new_draft_release)
 
         # Delete the existing draft release
-        existing_draft_release.delete_release()
+    latest_release.delete_release()
 
-        print(f"Draft release {new_version} created successfully.")
-    else:
-        print(f"No existing draft release found for {new_version}.")
+    print(f"Draft release {new_version} created successfully.")
+  
