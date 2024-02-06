@@ -194,6 +194,7 @@ def create_draft_release(repo, release_notes, version):
     release_notes_merged = release.body + '\n\n' + release_notes
 
     message = group_release_info(release_notes_merged)
+    print("message")
 
     # Upload release notes
     release.update_release(
