@@ -242,3 +242,4 @@ if __name__ == "__main__":
     group_release_info(release_notes_final)
 
     print(f"Draft release {new_version} created successfully.")
+    
