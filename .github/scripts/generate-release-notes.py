@@ -212,6 +212,8 @@ def create_draft_release(repo, release_notes, version):
     # Delete the old release
     latest_release.delete_release()
 
+    return formatted_message
+
 
 
 if __name__ == "__main__":
