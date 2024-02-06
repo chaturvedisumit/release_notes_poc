@@ -244,7 +244,7 @@ if __name__ == "__main__":
         if release.tag_name == new_version and release.draft:
             existing_draft_release = release
             break
-
+   print("existing_draft_release")
     # If an existing draft release is found, create a new draft release and delete the existing one
     if existing_draft_release:
         # Create a new draft release from the updated one
