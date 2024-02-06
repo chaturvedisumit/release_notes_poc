@@ -149,7 +149,7 @@ def fetch_closed_pull_requests(repo):
         release_notes += "### 🧺 Miscellaneous\n"
         release_notes += "\n".join(misc_notes) + "\n\n"
 
-    print (release_notes)
+    print ("older:",release_notes)
     return release_notes
 
 def group_release_info(release_notes):
@@ -182,7 +182,7 @@ def create_draft_release(repo, release_notes, version):
     latest_release = repo.get_releases()[0]
     release_body = latest_release.body
     print(type(release_body))
-    print(release_body)
+    print("newer-", release_body)
 
     release = repo.create_git_release(
         tag=version,
