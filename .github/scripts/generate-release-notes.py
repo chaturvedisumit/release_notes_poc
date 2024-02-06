@@ -184,13 +184,10 @@ def create_draft_release(repo, release_notes, version):
     # Get the body of the latest release
     release_body = latest_release.body
 
-    # Create a new draft release with the provided version and release notes
-    new_release = repo.create_git_release(
-        tag=version,
-        name=f'Release {version}',
-        message=release_body + '\n\n' + release_notes,  # Merge the old body and new notes
-        draft=True
-    )
+    # Merge the old body with the new release notes
+    merged_message = release_body + '\n\n' + release_notes
+    
+
 
     # Construct the formatted message for the new release
     formatted_message = ""
@@ -201,14 +198,11 @@ def create_draft_release(repo, release_notes, version):
         formatted_message += "\n"
 
     # Update the release with the formatted message
-    new_release.update_release(
-        name=new_release.title,
+    latest_release.update_release(
+        name=latest_release.title,
         message=formatted_message,
         draft=True
-    )
-
-    # Delete the old release
-    latest_release.delete_release()
+    
 
     return formatted_message
 
