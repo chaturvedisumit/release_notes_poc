@@ -226,9 +226,9 @@ if __name__ == "__main__":
 
     # Fetch the latest tags and their versions
     tags = repo.get_tags()
-    print("tags: ",tags)
+    print("tags: ", tags)
 
-    latest_tag_name= os.environ.get('DRAFT_RELEASE_TAG_NUMBER')
+    latest_tag_name = os.environ.get('DRAFT_RELEASE_TAG_NUMBER')
     # Increment the version based on the type of change
     new_version = increment_version(latest_tag_name)  # Example: Incrementing minor version
 
@@ -238,9 +238,7 @@ if __name__ == "__main__":
     # Create a new tag with the updated version
     release_notes_final = create_draft_release(repo, release_notes, new_version)
 
-    draft_release_notes = group_release_info(release_notes_final)
-
-      # Get the existing draft release to be deleted
+    # Check if an existing draft release exists
     existing_draft_release = None
     for release in repo.get_releases():
         if release.tag_name == new_version and release.draft:
@@ -263,5 +261,3 @@ if __name__ == "__main__":
         print(f"Draft release {new_version} created successfully.")
     else:
         print(f"No existing draft release found for {new_version}.")
-    print(f"Draft release {new_version} created successfully.")
-    
