@@ -259,7 +259,7 @@ if __name__ == "__main__":
     release_notes_final = create_draft_release(repo, release_notes, new_version)
 
     # Check if an existing draft release exists
-     try:
+    try:
         latest_release = repo.get_releases()[0]
     except:
         latest_release = ""
