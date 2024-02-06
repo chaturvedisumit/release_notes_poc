@@ -3,7 +3,7 @@ name: Generate Release Notes
 on:
   push:
     branches:
-        - release
+        - main
 jobs:
   generate_release_notes:
     runs-on: ubuntu-latest
