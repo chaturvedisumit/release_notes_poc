@@ -195,7 +195,7 @@ def create_draft_release(repo, release_notes, version):
 
     message = group_release_info(release_notes_merged)
     formatted_message = ""
-    for section, notes in release_notes.items():
+    for section, notes in message.items():
         formatted_message += f"## {section}\n"
         for note in notes:
             formatted_message += f"- {note}\n"
