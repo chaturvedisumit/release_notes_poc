@@ -133,20 +133,20 @@ def fetch_closed_pull_requests(repo):
 
 # Construct release notes
     if feature_notes:
-        release_notes += "### 🚀 Features\n"
-        release_notes += "\n".join(feature_notes) + "\n\n"
+        feature_notes += "### 🚀 Features\n"
+        feature_notes += "\n".join(feature_notes) + "\n\n"
 
     if bug_fix_notes:
-        release_notes += "### 🐛 Bug Fixes\n"
-        release_notes += "\n".join(bug_fix_notes) + "\n\n"
+        bug_fix_notes += "### 🐛 Bug Fixes\n"
+        bug_fix_notes += "\n".join(bug_fix_notes) + "\n\n"
 
     if hot_fix_notes:
-        release_notes += "### 🧰 Hot Fixes\n"
-        release_notes += "\n".join(hot_fix_notes) + "\n\n"
+        hot_fix_notes += "### 🧰 Hot Fixes\n"
+        hot_fix_notes += "\n".join(hot_fix_notes) + "\n\n"
 
     if misc_notes:
-        release_notes += "### 🧺 Miscellaneous\n"
-        release_notes += "\n".join(misc_notes) + "\n\n"
+        misc_notes += "### 🧺 Miscellaneous\n"
+        misc_notes += "\n".join(misc_notes) + "\n\n"
 
     print (release_notes)
     return release_notes
