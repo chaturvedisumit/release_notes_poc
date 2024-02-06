@@ -246,7 +246,6 @@ if __name__ == "__main__":
     # Check if an existing draft release exists
     latest_release = repo.get_releases()[0]
     
-    
     # If an existing draft release is found, create a new draft release and delete the existing one
    
     # Create a new draft release from the updated one
