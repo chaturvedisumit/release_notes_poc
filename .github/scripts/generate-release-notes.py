@@ -28,8 +28,6 @@ def increment_version(latest_tag_name):
     labels = closed_pull_request.get_labels()
     branch_name = [label.name for label in labels][0].strip()
     print("branch_name",branch_name)
-
-    print("branch_name:",branch_name)
     if branch_name=="feature":
         change_type = "major"
     elif branch_name=="bugfix" or branch_name == "bug_fix":
