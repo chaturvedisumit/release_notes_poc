@@ -247,7 +247,7 @@ if __name__ == "__main__":
     # Create a new draft release from the updated one
     new_draft_release = repo.create_git_release(
         tag=new_version,
-        name="release notes",
+        name=new_version,
         message=release_notes_final,
         draft=True
     )
