@@ -159,6 +159,7 @@ def group_release_info(release_notes):
 
     # Initialize a dictionary to store sections
     grouped_info = {}
+    
 
     # Process each section
     for section in sections:
