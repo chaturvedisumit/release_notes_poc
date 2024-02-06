@@ -2,6 +2,7 @@ import os
 from github import Github
 import re
 
+
 def get_latest_tags(repo):
     # Fetch all tags from the repository
     tags = repo.get_tags()
@@ -95,10 +96,6 @@ def fetch_closed_pull_requests(repo):
     elif branch_name=="bugfix" or branch_name=="bug_fix":
         bug_fix_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
 
-        bug_fix_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
-        # Fetch the URL of the pull request
-
-
         # Append the link to the pull request to your feature_notes
         bug_fix_notes.append(f"Pull Request: {pull_request_url}")
 
@@ -119,10 +116,6 @@ def fetch_closed_pull_requests(repo):
             hot_fix_notes.append(f"Commit: {commit.sha[:7]} - {commit.commit.message}")
 
     else:
-        misc_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
-
-        misc_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
-
         misc_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
 
         # Append the link to the pull request to your feature_notes
