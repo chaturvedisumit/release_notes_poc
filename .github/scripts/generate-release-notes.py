@@ -215,7 +215,6 @@ def create_draft_release(repo, release_notes, version):
     return formatted_message
 
 
-
 if __name__ == "__main__":
     # Get GitHub token from environment variable
     github_token = os.environ.get('GITHUB_TOKEN')
