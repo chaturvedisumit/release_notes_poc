@@ -216,7 +216,8 @@ if __name__ == "__main__":
 
     # Create a GitHub instance
     g = Github(github_token)
-
+    print(g)
+    print(type(g))
     # Get the repository
     repo = g.get_repo(os.environ.get('GITHUB_REPOSITORY'))
 
