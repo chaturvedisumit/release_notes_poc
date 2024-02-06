@@ -261,20 +261,21 @@ if __name__ == "__main__":
     # Check if an existing draft release exists
     latest_release = repo.get_releases()[0]
     
+    
     # If an existing draft release is found, create a new draft release and delete the existing one
-   
-    # Create a new draft release from the updated one
-    new_draft_release = repo.create_git_release(
-        tag=new_version,
-        name=new_version,
-        message=release_notes_final,
-        draft=True
-    )
+   if latest_release != "" :
+        # Create a new draft release from the updated one
+        new_draft_release = repo.create_git_release(
+            tag=new_version,
+            name=new_version,
+            message=release_notes_final,
+            draft=True
+        )
 
-    print("new_draft_release", new_draft_release)
+        print("new_draft_release", new_draft_release)
 
         # Delete the existing draft release
-    latest_release.delete_release()
+        latest_release.delete_release()
 
     print(f"Draft release {new_version} created successfully.")
   
