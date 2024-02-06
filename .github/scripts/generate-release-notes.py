@@ -209,7 +209,7 @@ def create_draft_release(repo, release_notes, version):
 
     # Update the release with the formatted message and keep it as a draft
     latest_release.update_release(
-        name=latest_release.title,
+        name=version,
         message=formatted_message,
         draft=True
     )
