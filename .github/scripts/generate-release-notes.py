@@ -3,23 +3,6 @@ from github import Github
 import re
 
 
-def get_latest_tags(repo):
-    # Fetch all tags from the repository
-    tags = repo.get_tags()
-    tag_dict = {}
-    for tag in tags:
-        # Parse the version from the tag name
-        match = re.match(r'v(\d+)\.(\d+)\.(\d+)', tag.name)
-        if match:
-            major, minor, patch = map(int, match.groups())
-            tag_dict[tag.name] = {
-                'major': major,
-                'minor': minor,
-                'patch': patch
-            }
-    return tag_dict
-
-
 def increment_version(latest_tag_name):
 
     closed_pr = repo.get_pulls(state='closed')
@@ -28,8 +11,6 @@ def increment_version(latest_tag_name):
     labels = closed_pull_request.get_labels()
     branch_name = [label.name for label in labels][0].strip()
     print("branch_name",branch_name)
-
-    print("branch_name:",branch_name)
     if branch_name=="feature":
         change_type = "major"
     elif branch_name=="bugfix" or branch_name == "bug_fix":
@@ -142,7 +123,7 @@ def fetch_closed_pull_requests(repo):
     if misc_notes:
         release_notes += "### 🧺 Miscellaneous\n"
         release_notes += "\n".join(misc_notes) + "\n\n"
-
+    print("hot_fix_notes",hot_fix_notes)
     print ("older:",release_notes)
     return release_notes
 
@@ -175,10 +156,18 @@ def group_release_info(release_notes):
 
 def create_draft_release(repo, release_notes, version):
     # Get the latest release
-    latest_release = repo.get_releases()[0]
+    print(repo.get_releases())
+
+    try:
+        latest_release = repo.get_releases()[0]
+    except:
+        latest_release = ""
 
     # Get the body of the latest release
-    release_body = latest_release.body
+    if latest_release == "" :
+        release_body = ""
+    else:
+        release_body = latest_release.body
 
     # Merge the old body with the new release notes
     merged_message = release_body + '\n\n' + release_notes
@@ -202,11 +191,18 @@ def create_draft_release(repo, release_notes, version):
 
 
     # Update the release with the formatted message and keep it as a draft
-    latest_release.update_release(
-        name=latest_release.title,
+    if latest_release == "" :
+        new_draft_release = repo.create_git_release(
+        tag=new_version,
+        name=version,
         message=formatted_message,
-        draft=True
-    )
+        draft=True)
+    else:
+        latest_release.update_release(
+            name=version,
+            message=formatted_message,
+            draft=True
+        )
 
     return formatted_message
 
@@ -220,17 +216,31 @@ if __name__ == "__main__":
 
     # Create a GitHub instance
     g = Github(github_token)
-
+    print(g)
+    print(type(g))
     # Get the repository
     repo = g.get_repo(os.environ.get('GITHUB_REPOSITORY'))
+
+    print("repo",repo)
+    print("type repo",type(repo))
+
 
     # Fetch the latest tags and their versions
     tags = repo.get_tags()
     print("tags: ", tags)
 
-    latest_tag_name = os.environ.get('DRAFT_RELEASE_TAG_NUMBER')
+    latest_draft_tag = os.environ.get('DRAFT_RELEASE_TAG_NUMBER')
+    latest_tag = os.environ.get('LATEST_TAG')
+
+    print("latest_tag",latest_tag)
+    
     # Increment the version based on the type of change
-    new_version = increment_version(latest_tag_name)  # Example: Incrementing minor version
+    if latest_draft_tag is not None and latest_draft_tag != "":
+        new_version = increment_version(latest_draft_tag)  # Example: Incrementing minor version
+    elif latest_tag is not None and latest_tag != "":
+        new_version = increment_version(latest_tag)
+    else:
+        new_version = "v0.0.0"
 
     # Fetch closed pull requests and generate release notes
     release_notes = fetch_closed_pull_requests(repo)
@@ -239,23 +249,26 @@ if __name__ == "__main__":
     release_notes_final = create_draft_release(repo, release_notes, new_version)
 
     # Check if an existing draft release exists
-    latest_release = repo.get_releases()[0]
+    try:
+        latest_release = repo.get_releases()[0]
+    except:
+        latest_release = ""
     
     
     # If an existing draft release is found, create a new draft release and delete the existing one
-   
-    # Create a new draft release from the updated one
-    new_draft_release = repo.create_git_release(
-        tag=new_version,
-        name=new_version,
-        message=release_notes_final,
-        draft=True
-    )
+    if latest_release != "" :
+        
+        new_draft_release = repo.create_git_release(
+            tag=new_version,
+            name=new_version,
+            message=release_notes_final,
+            draft=True
+        )
 
-    print("new_draft_release", new_draft_release)
+        print("new_draft_release", new_draft_release)
 
         # Delete the existing draft release
-    latest_release.delete_release()
+        latest_release.delete_release()
 
     print(f"Draft release {new_version} created successfully.")
   
