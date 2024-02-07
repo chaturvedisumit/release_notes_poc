@@ -44,5 +44,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-          DRAFT_RELEASE_TAG_NUMBER: ${{ steps.set_draft_release_tag.outputs.DRAFT_RELEASE_TAG_NUMBER }}
-          LATEST_TAG: ${{ steps.set_latest_tag.outputs.LATEST_TAG }}
+          DRAFT_RELEASE_TAG_NUMBER: ${{ steps.fetch_draft_release.outputs.DRAFT_RELEASE_TAG_NUMBER }}
+          LATEST_TAG: ${{ steps.check_draft_release.outputs.LATEST_TAG }}
