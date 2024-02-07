@@ -233,6 +233,7 @@ if __name__ == "__main__":
     latest_tag = os.environ.get('LATEST_TAG')
 
     print("latest_tag",latest_tag)
+    print("latest_draft_tag",latest_draft_tag)
     
     # Increment the version based on the type of change
     if latest_draft_tag is not None and latest_draft_tag != "":
