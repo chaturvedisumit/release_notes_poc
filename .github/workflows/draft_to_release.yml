@@ -51,4 +51,4 @@ jobs:
         channel-id: 'C06HM7BUHA6'  #The channel name where message has to be sent
         slack-message: |
            Bi-Weekly Release: The release has been successfully published for  ${{ steps.slack.outputs.repo_name }}.
-          Release Details: ${{ steps.publish_release.outputs.release_info }}
+           Release Details: ${{ steps.publish_release.outputs.release_info }}
