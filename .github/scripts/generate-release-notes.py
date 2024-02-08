@@ -145,7 +145,8 @@ def group_release_info(release_notes):
             if section_title in template_headings:
                 continue  # Skip this section
            
-
+            section_content = '\n'.join(lines[1:]).strip()
+            
             # Add section content to the corresponding title in the dictionary
             if section_title in grouped_info:
                 grouped_info[section_title].append(section_content)
