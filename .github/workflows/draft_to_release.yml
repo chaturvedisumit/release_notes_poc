@@ -25,7 +25,7 @@ jobs:
         echo "::set-output name=draft_id::$draft_id"
 
     - name: Publish Release
-      id: release_info
+      id: publish_release
       if: steps.get_draft_id.outputs.draft_id != null
       run: |
         draft_id=${{ steps.get_draft_id.outputs.draft_id }}
