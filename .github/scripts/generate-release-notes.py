@@ -9,6 +9,7 @@ def increment_version(latest_tag_name):
     closed_pull_request = closed_pr[0]
     
     labels = closed_pull_request.get_labels()
+    print("labels",labels)
     branch_name = [label.name for label in labels][0].strip()
     print("branch_name",branch_name)
     if branch_name=="feature":
