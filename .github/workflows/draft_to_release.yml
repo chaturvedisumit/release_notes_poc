@@ -35,6 +35,7 @@ jobs:
         https://api.github.com/repos/${{ github.repository }}/releases | \
         jq -r '.[] | select(.draft == false) | .html_url')
 
+        echo "The release info is"$release_info
         echo "::set-output name=release_info::$release_info"
     - name: Post to a Slack channel
       id: slack
