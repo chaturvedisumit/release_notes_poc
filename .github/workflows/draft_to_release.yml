@@ -42,10 +42,13 @@ jobs:
       id: slack
       if: steps.publish_release.outputs.release_info != ''
       uses: slackapi/slack-github-action@v1.25.0
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        repo_name: steps.publish_release.outputs.release_info.split("/")[4]
+
+        echo "repo name is: $repo_name"
       with:
         channel-id: 'C06HM7BUHA6'  #The channel name where message has to be sent
         slack-message: |
           Bi-Weekly Release: The release has been successfully published.
           Release Details: ${{ steps.publish_release.outputs.release_info }}
-      env:
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
