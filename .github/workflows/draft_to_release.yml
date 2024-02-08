@@ -45,7 +45,7 @@ jobs:
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         repo_info: ${{ steps.publish_release.outputs.release_info }}
-        repo_name: ${{ steps.slack.outputs.repo_info.split("/") }}
+        repo_name: ${{ steps.slack.outputs.repo_info }}.split("/")
         echo "repo name is: $repo_name"
       with:
         channel-id: 'C06HM7BUHA6'  #The channel name where message has to be sent
