@@ -10,7 +10,6 @@ def increment_version(latest_tag_name):
     
     labels = closed_pull_request.get_labels()
     branch_name = [label.name for label in labels][0].strip()
-    print("branch_name",branch_name)
     if branch_name=="feature":
         change_type = "major"
     elif branch_name=="bugfix" or branch_name == "bug_fix":
@@ -39,14 +38,7 @@ def increment_version(latest_tag_name):
 def fetch_closed_pull_requests(repo):
     # Fetch closed pull requests
     closed_pr = repo.get_pulls(state='closed')
-
-    print("closed_pr: ", closed_pr)
-
     closed_pull_request = closed_pr[0]
-    
-
-
-    print("closed_pull_request: ", closed_pull_request)
 
     labels = closed_pull_request.get_labels()
     branch_name = [label.name for label in labels][0]
@@ -63,7 +55,7 @@ def fetch_closed_pull_requests(repo):
     commits = closed_pull_request.get_commits()
     
     if branch_name=="feature":
-        feature_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
+        feature_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title}")
 
         # Append the link to the pull request to your feature_notes
         feature_notes.append(f"Pull Request: {pull_request_url}")
@@ -75,7 +67,7 @@ def fetch_closed_pull_requests(repo):
 # Now feature_notes contains the pull request URL, pull request title, body, and commit messages
 
     elif branch_name=="bugfix" or branch_name=="bug_fix":
-        bug_fix_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
+        bug_fix_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title}")
 
         # Append the link to the pull request to your feature_notes
         bug_fix_notes.append(f"Pull Request: {pull_request_url}")
@@ -87,7 +79,7 @@ def fetch_closed_pull_requests(repo):
 
     elif branch_name=="hotfix" or branch_name=="hot_fix":
 
-        hot_fix_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
+        hot_fix_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title}")
 
         # Append the link to the pull request to your feature_notes
         hot_fix_notes.append(f"Pull Request: {pull_request_url}")
@@ -97,7 +89,7 @@ def fetch_closed_pull_requests(repo):
             hot_fix_notes.append(f"Commit: {commit.sha[:7]} - {commit.commit.message}")
 
     else:
-        misc_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
+        misc_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title}")
 
         # Append the link to the pull request to your feature_notes
         misc_notes.append(f"Pull Request: {pull_request_url}")
@@ -123,8 +115,6 @@ def fetch_closed_pull_requests(repo):
     if misc_notes:
         release_notes += "### 🧺 Miscellaneous\n"
         release_notes += "\n".join(misc_notes) + "\n\n"
-    print("hot_fix_notes",hot_fix_notes)
-    print ("older:",release_notes)
     return release_notes
 
 def group_release_info(release_notes):
@@ -140,8 +130,9 @@ def group_release_info(release_notes):
             # Split each section into title and content
             lines = section.strip().split('\n')
             section_title = lines[0].strip()
+           
             section_content = '\n'.join(lines[1:]).strip()
-
+            
             # Add section content to the corresponding title in the dictionary
             if section_title in grouped_info:
                 grouped_info[section_title].append(section_content)
@@ -156,8 +147,6 @@ def group_release_info(release_notes):
 
 def create_draft_release(repo, release_notes, version):
     # Get the latest release
-    print(repo.get_releases())
-
     try:
         latest_release = repo.get_releases()[0]
     except:
@@ -172,22 +161,16 @@ def create_draft_release(repo, release_notes, version):
     # Merge the old body with the new release notes
     merged_message = release_body + '\n\n' + release_notes
 
-    print("merged_message:", merged_message)
-
     # Format the merged message using group_release_info()
     formatted_message = ""
     grouped_info = group_release_info(merged_message)
-    print("grouped_info:", grouped_info)
     # Format the merged message using group_release_info()
     formatted_message = ""
     for section, notes in grouped_info.items():
         formatted_message += f"## {section}\n"
         for note in notes:
-            formatted_message += f"- {note}\n"
+            formatted_message += f"{note}\n"
         formatted_message += "\n"
-
-
-    print("formatted_message:", formatted_message)
 
 
     # Update the release with the formatted message and keep it as a draft
@@ -216,23 +199,15 @@ if __name__ == "__main__":
 
     # Create a GitHub instance
     g = Github(github_token)
-    print(g)
-    print(type(g))
     # Get the repository
     repo = g.get_repo(os.environ.get('GITHUB_REPOSITORY'))
-
-    print("repo",repo)
-    print("type repo",type(repo))
 
 
     # Fetch the latest tags and their versions
     tags = repo.get_tags()
-    print("tags: ", tags)
 
     latest_draft_tag = os.environ.get('DRAFT_RELEASE_TAG_NUMBER')
     latest_tag = os.environ.get('LATEST_TAG')
-
-    print("latest_tag",latest_tag)
     
     # Increment the version based on the type of change
     if latest_draft_tag is not None and latest_draft_tag != "":
@@ -264,8 +239,6 @@ if __name__ == "__main__":
             message=release_notes_final,
             draft=True
         )
-
-        print("new_draft_release", new_draft_release)
 
         # Delete the existing draft release
         latest_release.delete_release()
