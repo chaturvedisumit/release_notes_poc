@@ -183,7 +183,7 @@ def create_draft_release(repo, release_notes, version):
     for section, notes in grouped_info.items():
         formatted_message += f"## {section}\n"
         for note in notes:
-            formatted_message += f"- {note}\n"
+            formatted_message += f"{note}\n"
         formatted_message += "\n"
 
 
