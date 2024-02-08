@@ -25,6 +25,7 @@ jobs:
         echo "::set-output name=draft_id::$draft_id"
 
     - name: Publish Release
+      id: release_info
       if: steps.get_draft_id.outputs.draft_id != null
       run: |
         draft_id=${{ steps.get_draft_id.outputs.draft_id }}
@@ -39,7 +40,7 @@ jobs:
         echo "::set-output name=release_info::$release_info"
     - name: Post to a Slack channel
       id: slack
-      if: steps.publish_release.outputs.release_info != null
+      if: steps.publish_release.outputs.release_info != ""
       uses: slackapi/slack-github-action@v1.25.0
       with:
         channel-id: 'C06HM7BUHA6'  #The channel name where message has to be sent
