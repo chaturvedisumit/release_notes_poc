@@ -36,7 +36,7 @@ jobs:
           else
             latest_tag=$(curl -sH "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
               https://api.github.com/repos/${{ github.repository }}/tags | jq -r '.[0].name')
-            echo "::set-output name=LATEST_TAG::latest_tag"
+            echo "::set-output name=LATEST_TAG::$latest_tag"
           fi
 
       - name: Run script
