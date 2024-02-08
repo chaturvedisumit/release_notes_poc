@@ -55,7 +55,7 @@ def fetch_closed_pull_requests(repo):
     commits = closed_pull_request.get_commits()
     
     if branch_name=="feature":
-        feature_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
+        feature_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title}")
 
         # Append the link to the pull request to your feature_notes
         feature_notes.append(f"Pull Request: {pull_request_url}")
@@ -67,7 +67,7 @@ def fetch_closed_pull_requests(repo):
 # Now feature_notes contains the pull request URL, pull request title, body, and commit messages
 
     elif branch_name=="bugfix" or branch_name=="bug_fix":
-        bug_fix_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
+        bug_fix_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title}")
 
         # Append the link to the pull request to your feature_notes
         bug_fix_notes.append(f"Pull Request: {pull_request_url}")
@@ -79,7 +79,7 @@ def fetch_closed_pull_requests(repo):
 
     elif branch_name=="hotfix" or branch_name=="hot_fix":
 
-        hot_fix_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
+        hot_fix_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title}")
 
         # Append the link to the pull request to your feature_notes
         hot_fix_notes.append(f"Pull Request: {pull_request_url}")
@@ -89,7 +89,7 @@ def fetch_closed_pull_requests(repo):
             hot_fix_notes.append(f"Commit: {commit.sha[:7]} - {commit.commit.message}")
 
     else:
-        misc_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title} - {closed_pull_request.body}")
+        misc_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title}")
 
         # Append the link to the pull request to your feature_notes
         misc_notes.append(f"Pull Request: {pull_request_url}")
@@ -130,20 +130,6 @@ def group_release_info(release_notes):
             # Split each section into title and content
             lines = section.strip().split('\n')
             section_title = lines[0].strip()
-
-            template_headings = [
-                '## Description',
-                '## Why',
-                '## Your JIRA ticket',
-                '## Type of change',
-                '## How Has This Been Tested?',
-                '## Screenshots',
-                '## Checklist',
-                '## Post release',
-                '## Checklist for Reviewer(s)'
-            ]
-            if section_title in template_headings:
-                continue  # Skip this section
            
             section_content = '\n'.join(lines[1:]).strip()
             
