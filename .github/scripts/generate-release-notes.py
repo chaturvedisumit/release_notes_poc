@@ -142,19 +142,20 @@ def group_release_info(release_notes):
             lines = section.strip().split('\n')
             section_title = lines[0].strip()
 
-            if section_title.startswith('## Description') or \
-               section_title.startswith('## Why') or \
-               section_title.startswith('## Your JIRA ticket') or \
-               section_title.startswith('## Type of change') or \
-               section_title.startswith('## How Has This Been Tested?') or \
-               section_title.startswith('## Screenshots') or \
-               section_title.startswith('## Checklist') or \
-               section_title.startswith('## Post release') or \
-               section_title.startswith('## Checklist for Reviewer(s)'):
-                continue  
-
-            section_content = '\n'.join(lines[1:]).strip()
-            section_content = '\n'.join(lines[1:]).strip()
+            template_headings = [
+                '## Description',
+                '## Why',
+                '## Your JIRA ticket',
+                '## Type of change',
+                '## How Has This Been Tested?',
+                '## Screenshots',
+                '## Checklist',
+                '## Post release',
+                '## Checklist for Reviewer(s)'
+            ]
+            if section_title in template_headings:
+                continue  # Skip this section
+           
 
             # Add section content to the corresponding title in the dictionary
             if section_title in grouped_info:
