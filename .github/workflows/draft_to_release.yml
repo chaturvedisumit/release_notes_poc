@@ -45,10 +45,10 @@ jobs:
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         repo_info: ${{ steps.publish_release.outputs.release_info }}
-        repo_name: ${{ steps.slack.outputs.repo_info }}.split("/")
+        repo_name: ${{ steps.slack.outputs.repo_info }}.split("/")[4]
         echo "repo name is: $repo_name"
       with:
         channel-id: 'C06HM7BUHA6'  #The channel name where message has to be sent
         slack-message: |
-          Bi-Weekly Release: The release has been successfully published.
+          Bi-Weekly Release: The release has been successfully published for  ${{ steps.slack.outputs.repo_name }}.
           Release Details: ${{ steps.publish_release.outputs.release_info }}
