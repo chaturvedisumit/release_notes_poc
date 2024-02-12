@@ -156,7 +156,10 @@ def create_draft_release(repo, release_notes, version):
     if latest_release == "" :
         release_body = ""
     else:
-        release_body = latest_release.body
+        if latest_release.draft:
+            release_body = latest_release.body
+        else:
+            release_body = ""
 
     # Merge the old body with the new release notes
     merged_message = release_body + '\n\n' + release_notes
