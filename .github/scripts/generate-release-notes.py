@@ -244,7 +244,6 @@ if __name__ == "__main__":
         )
 
         # Delete the existing draft release
-        latest_release.delete_release()
 
     print(f"Draft release {new_version} created successfully.")
   
