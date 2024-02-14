@@ -4,13 +4,6 @@ on:
     types: [opened, reopened, synchronize]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-permissions:
-  contents: read
-
-jobs:
   pr-labeler:
     permissions:
       contents: read # for TimonVS/pr-labeler-action to read config file
