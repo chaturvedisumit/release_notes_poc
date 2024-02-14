@@ -156,7 +156,6 @@ def create_draft_release(repo, release_notes, version):
             release_body = latest_release.body
         else:
             release_body = ""
-        
     # Merge the old body with the new release notes
     merged_message = release_body + '\n\n' + release_notes
 
