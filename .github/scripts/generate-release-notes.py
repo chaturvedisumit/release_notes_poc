@@ -195,7 +195,6 @@ if __name__ == "__main__":
     # Get the repository
     repo = g.get_repo(os.environ.get('GITHUB_REPOSITORY'))
 
-
     # Fetch the latest tags and their versions
     tags = repo.get_tags()
    
