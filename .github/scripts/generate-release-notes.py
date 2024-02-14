@@ -216,7 +216,7 @@ if __name__ == "__main__":
 
     # Fetch the latest tags and their versions
     tags = repo.get_tags()
-
+    
    
     latest_draft_tag = os.environ.get('DRAFT_RELEASE_TAG_NUMBER')
     latest_tag = os.environ.get('LATEST_TAG')
