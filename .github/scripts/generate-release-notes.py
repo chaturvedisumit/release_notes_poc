@@ -190,12 +190,14 @@ if __name__ == "__main__":
     # Get GitHub token from environment variable
     github_token = os.environ.get('GITHUB_TOKEN')
 
-    hostname = os.environ.get('GHE_HOST')
-    
-    g = Github(base_url="https://github.es.ecg.tools/api/v3", login_or_token=github_token)
-    
+    # Create a GitHub instance
+    g = Github(github_token)
     # Get the repository
     repo = g.get_repo(os.environ.get('GITHUB_REPOSITORY'))
+
+
+    # Fetch the latest tags and their versions
+    tags = repo.get_tags()
    
     latest_draft_tag = os.environ.get('DRAFT_RELEASE_TAG_NUMBER')
     latest_tag = os.environ.get('LATEST_TAG')
