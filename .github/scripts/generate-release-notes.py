@@ -47,7 +47,8 @@ def fetch_squashed_commit(repo, pull_request):
     commit_title = commit.commit.message.splitlines()[0]  # Extract the first line as the title
     commit_link = commit.html_url
 
-    return f"Commit: [{commit_title}]({commit_link})"
+    # return f"Commit: [{commit_title}]({commit_link})"
+    return f"{commit_title}"
 
 def fetch_closed_pull_requests(repo):
     # Fetch closed pull requests
@@ -71,50 +72,50 @@ def fetch_closed_pull_requests(repo):
         squashed_commit = fetch_squashed_commit(repo, closed_pull_request)
         
         if branch_name=="feature":
-            feature_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title}")
+            feature_notes.append(f"{- squashed_commit}  by @{closed_pull_request.user.login} {pull_request_url} ")
 
             # Append the link to the pull request to your feature_notes
-            feature_notes.append(f"Pull Request: {pull_request_url}")
+            # feature_notes.append(f"Pull Request: {pull_request_url}")
 
             # Add commit messages
-            feature_notes.append(squashed_commit)
+            # feature_notes.append(squashed_commit)
             # for commit in commits:
             #     feature_notes.append(f"Commit: {commit.sha[:7]} - {commit.commit.message}")
 
     # Now feature_notes contains the pull request URL, pull request title, body, and commit messages
 
         elif branch_name=="bugfix" or branch_name=="bug_fix":
-            bug_fix_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title}")
+            bug_fix_notes.append(f"{- squashed_commit}  by @{closed_pull_request.user.login} {pull_request_url} ")
 
             # Append the link to the pull request to your feature_notes
-            bug_fix_notes.append(f"Pull Request: {pull_request_url}")
+            # bug_fix_notes.append(f"Pull Request: {pull_request_url}")
 
             # Add commit messages
-            bug_fix_notes.append(squashed_commit)
+            # bug_fix_notes.append(squashed_commit)
             # for commit in commits:
             #     bug_fix_notes.append(f"Commit: {commit.sha[:7]} - {commit.commit.message}")
 
 
         elif branch_name=="hotfix" or branch_name=="hot_fix":
 
-            hot_fix_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title}")
+            hot_fix_notes.append(f"{- squashed_commit}  by @{closed_pull_request.user.login} {pull_request_url} ")
 
             # Append the link to the pull request to your feature_notes
-            hot_fix_notes.append(f"Pull Request: {pull_request_url}")
+            # hot_fix_notes.append(f"Pull Request: {pull_request_url}")
 
             # Add commit messages
-            hot_fix_notes.append(squashed_commit)
+            # hot_fix_notes.append(squashed_commit)
             # for commit in commits:
             #     hot_fix_notes.append(f"Commit: {commit.sha[:7]} - {commit.commit.message}")
 
         else:
-            misc_notes.append(f"@{closed_pull_request.user.login} {closed_pull_request.title}")
+            misc_notes.append(f"{- squashed_commit}  by @{closed_pull_request.user.login} {pull_request_url} ")
 
             # Append the link to the pull request to your feature_notes
-            misc_notes.append(f"Pull Request: {pull_request_url}")
+            # misc_notes.append(f"Pull Request: {pull_request_url}")
 
             # Add commit messages
-            misc_notes.append(squashed_commit)
+            # misc_notes.append(squashed_commit)
             # for commit in commits:
             #     misc_notes.append(f"Commit: {commit.sha[:7]} - {commit.commit.message}")
 
