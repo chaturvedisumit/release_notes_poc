@@ -23,7 +23,7 @@ jobs:
     - name: Get Draft Release Info
       id: get_draft_release_info
       run: |
-        draft_info=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/releases" | jq -r '.[] | select(.draft == true) | .name, .id')
+        draft_info=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/releases" | jq -r '.[] | select(.draft == true) | .tag_name, .id')
         echo "::set-output name=draft_info::$draft_info"
 
     - name: Publish Release
