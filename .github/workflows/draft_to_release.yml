@@ -19,8 +19,8 @@ jobs:
         python-version: '3.8'
 
     - name: Get Tag Name
-        id: tag_name
-        run: echo "::set-output name=tag_name::$(git describe --tags --abbrev=0)"
+      id: tag_name
+      run: echo "::set-output name=tag_name::$(git describe --tags --abbrev=0)"
 
     - name: Get Draft Release ID
       id: get_draft_id
