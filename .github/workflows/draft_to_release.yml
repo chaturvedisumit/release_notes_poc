@@ -45,7 +45,7 @@ jobs:
         git push origin $draft_info  # Push the new tag to the remote repository
 
         release_info=$(curl -sH "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-        https://github.es.ecg.tools/api/v3/repos/${{ github.repository }}/releases | \
+        https:/https://api.github.com/repos/${{ github.repository }}/releases | \
         jq -r '.[] | select(.draft == false) | .html_url')
         echo "::set-output name=release_info::$release_info"
 
