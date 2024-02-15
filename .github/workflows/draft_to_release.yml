@@ -18,10 +18,14 @@ jobs:
       with:
         python-version: '3.8'
 
+    - name: Get Tag Name
+      id: tag_name
+      run: echo "::set-output name=tag_name::$(git describe --tags --abbrev=0)"
+
     - name: Get Draft Release ID
       id: get_draft_id
       run: |
-        draft_id=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/releases" | jq -r '.[] | select(.draft == true) | .id')
+        draft_id=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ steps.tag_name.outputs.tag_name }}" | jq -r '.id')
         echo "::set-output name=draft_id::$draft_id"
 
     - name: Publish Release

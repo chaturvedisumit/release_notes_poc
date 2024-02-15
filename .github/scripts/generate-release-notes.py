@@ -193,7 +193,7 @@ def create_draft_release(repo, release_notes, version):
     # Update the release with the formatted message and keep it as a draft
     if release_body == "" :
         repo.create_git_release(
-        tag=new_version,
+        tag=version,
         name=version,
         message=formatted_message,
         draft=True)
