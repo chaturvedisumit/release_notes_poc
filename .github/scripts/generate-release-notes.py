@@ -199,7 +199,7 @@ def create_draft_release(repo, release_notes, version):
         draft=True)
     else:
         latest_release.update_release(
-            tag=version,
+            name=version,
             message=formatted_message,
             draft=True
         )
@@ -238,5 +238,5 @@ if __name__ == "__main__":
 
     print(f"Draft release {new_version} created successfully.")
 
-    
+
   
