@@ -237,6 +237,4 @@ if __name__ == "__main__":
     release_notes_final = create_draft_release(repo, release_notes, new_version)
 
     print(f"Draft release {new_version} created successfully.")
-
-
   
