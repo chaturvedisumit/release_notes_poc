@@ -72,7 +72,7 @@ def fetch_closed_pull_requests(repo):
         squashed_commit = fetch_squashed_commit(repo, closed_pull_request)
         
         if branch_name=="feature":
-            feature_notes.append(f"{- squashed_commit}  by @{closed_pull_request.user.login} {pull_request_url} ")
+            feature_notes.append(f"- {squashed_commit}  by @{closed_pull_request.user.login} {pull_request_url} ")
 
             # Append the link to the pull request to your feature_notes
             # feature_notes.append(f"Pull Request: {pull_request_url}")
@@ -85,7 +85,7 @@ def fetch_closed_pull_requests(repo):
     # Now feature_notes contains the pull request URL, pull request title, body, and commit messages
 
         elif branch_name=="bugfix" or branch_name=="bug_fix":
-            bug_fix_notes.append(f"{- squashed_commit}  by @{closed_pull_request.user.login} {pull_request_url} ")
+            bug_fix_notes.append(f"- {squashed_commit}  by @{closed_pull_request.user.login} {pull_request_url} ")
 
             # Append the link to the pull request to your feature_notes
             # bug_fix_notes.append(f"Pull Request: {pull_request_url}")
@@ -98,7 +98,7 @@ def fetch_closed_pull_requests(repo):
 
         elif branch_name=="hotfix" or branch_name=="hot_fix":
 
-            hot_fix_notes.append(f"{- squashed_commit}  by @{closed_pull_request.user.login} {pull_request_url} ")
+            hot_fix_notes.append(f"- {squashed_commit}  by @{closed_pull_request.user.login} {pull_request_url} ")
 
             # Append the link to the pull request to your feature_notes
             # hot_fix_notes.append(f"Pull Request: {pull_request_url}")
@@ -109,7 +109,7 @@ def fetch_closed_pull_requests(repo):
             #     hot_fix_notes.append(f"Commit: {commit.sha[:7]} - {commit.commit.message}")
 
         else:
-            misc_notes.append(f"{- squashed_commit}  by @{closed_pull_request.user.login} {pull_request_url} ")
+            misc_notes.append(f"- {squashed_commit}  by @{closed_pull_request.user.login} {pull_request_url} ")
 
             # Append the link to the pull request to your feature_notes
             # misc_notes.append(f"Pull Request: {pull_request_url}")
