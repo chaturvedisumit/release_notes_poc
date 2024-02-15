@@ -24,7 +24,7 @@ jobs:
         id: fetch_draft_release
         run: |
           draft_tag=$(curl -sH "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              https://api.github.com/repos/${{ github.repository }}/releases | jq -r '.[] | select(.draft) | .tag_name')
+              https://api.github.com/repos/${{ github.repository }}/releases | jq -r '.[] | select(.draft) | .name')
           echo "::set-output name=DRAFT_RELEASE_TAG_NUMBER::$draft_tag"
 
       - name: Check if there is a draft release
