@@ -6,7 +6,11 @@ on:
 
 jobs:
   create_release:
+<<<<<<< HEAD
     runs-on: [self-hosted, Linux, size/small, emt]
+=======
+    runs-on: ubuntu-latest
+>>>>>>> 9c859620fde5189389d941228c41a20c82d41ef4
     steps:
     - name: Set GHE_HOST
       run: |
@@ -22,10 +26,23 @@ jobs:
 
     - name: Get Draft Release Info
       id: get_draft_release_info
+<<<<<<< HEAD
       run: |
         draft_info=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/releases" | jq -r '.[] | select(.draft == true) | .name, .id')
         echo "::set-output name=draft_info::$draft_info"
 
+=======
+      run: |
+        draft_info=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/releases" | jq -r '.[] | select(.draft == true) | .name')
+        echo "::set-output name=draft_info::$draft_info"
+
+    - name: Get Draft Release ID
+      id: get_draft_id
+      run: |
+        draft_id=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/releases" | jq -r '.[] | select(.draft == true) | .id')
+        echo "::set-output name=draft_id::$draft_id"
+    
+>>>>>>> 9c859620fde5189389d941228c41a20c82d41ef4
     - name: Publish Release
       id: publish_release
       if: steps.get_draft_release_info.outputs.draft_info != ''
@@ -38,12 +55,21 @@ jobs:
 
         curl -X PATCH -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/${{ github.repository }}/releases/$draft_id" -d '{"draft": false}'
 
+<<<<<<< HEAD
         git tag -d $draft_tag  # Delete the existing local tag if it exists
         git tag $draft_tag  # Create a new tag with the same name as the draft
         git push origin $draft_tag  # Push the new tag to the remote repository
 
         release_info=$(curl -sH "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
         https://github.es.ecg.tools/api/v3/repos/${{ github.repository }}/releases | \
+=======
+        git tag -d $draft_info  # Delete the existing local tag if it exists
+        git tag $draft_info  # Create a new tag with the same name as the draft
+        git push origin $draft_info  # Push the new tag to the remote repository
+
+        release_info=$(curl -sH "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+        https:/https://api.github.com/repos/${{ github.repository }}/releases | \
+>>>>>>> 9c859620fde5189389d941228c41a20c82d41ef4
         jq -r '.[] | select(.draft == false) | .html_url')
         echo "::set-output name=release_info::$release_info"
 
@@ -67,4 +93,8 @@ jobs:
           Bi-Weekly Release: The release has been successfully published for :   ${{ steps.publish_release.outputs.repo_name }}
           Release Details: ${{ steps.publish_release.outputs.release_info }}
       env:
+<<<<<<< HEAD
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+=======
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+>>>>>>> 9c859620fde5189389d941228c41a20c82d41ef4
