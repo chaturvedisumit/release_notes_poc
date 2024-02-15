@@ -194,6 +194,7 @@ def create_draft_release(repo, release_notes, version):
     if release_body == "" :
         repo.create_git_release(
         tag=version,
+        name=version,
         message=formatted_message,
         draft=True)
     else:
