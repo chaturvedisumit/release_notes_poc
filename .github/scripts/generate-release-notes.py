@@ -45,7 +45,7 @@ def fetch_squashed_commit(repo, pull_request):
 
     # Extract information from the squashed commit
     commit_title = commit.commit.message.splitlines()[0]  # Extract the first line as the title
-    commit_link = commit.html_url
+    # commit_link = commit.html_url
 
     # return f"Commit: [{commit_title}]({commit_link})"
     return f"{commit_title}"
