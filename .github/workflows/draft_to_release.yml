@@ -30,6 +30,12 @@ jobs:
         echo "::set-output name=draft_id::$draft_id"
         echo "::set-output name=draft_name::$draft_name"
 
+    - name: Get Draft Release ID
+      id: get_draft_id
+      run: |
+        draft_id=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/releases" | jq -r '.[] | select(.draft == true) | .id')
+        echo "::set-output name=draft_id::$draft_id"
+    
     - name: Publish Release
       id: publish_release
       if: steps.get_draft_id.outputs.draft_id != null
