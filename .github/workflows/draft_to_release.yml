@@ -76,3 +76,4 @@ jobs:
           Release Details: ${{ steps.publish_release.outputs.release_info }}
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        
