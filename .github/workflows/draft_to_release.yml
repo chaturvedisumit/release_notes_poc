@@ -1,8 +1,8 @@
 name: Publish release
 on:
- push :
+  push:
     branches :
-      - master
+      - main
 
 jobs:
   create_release:
@@ -19,31 +19,39 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.8'
-
+        
     - name: Get Draft Release ID
       id: get_draft_id
       run: |
         draft_info=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/releases" | jq -r '.[] | select(.draft == true)')
         draft_id=$(echo "$draft_info" | jq -r '.id')
         draft_name=$(echo "$draft_info" | jq -r '.name')
+
+        echo "draft name is :"$draft_name
         
         echo "::set-output name=draft_id::$draft_id"
         echo "::set-output name=draft_name::$draft_name"
-
-    - name: Get Draft Release ID
-      id: get_draft_id
-      run: |
-        draft_id=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/releases" | jq -r '.[] | select(.draft == true) | .id')
-        echo "::set-output name=draft_id::$draft_id"
     
     - name: Publish Release
       id: publish_release
       if: steps.get_draft_id.outputs.draft_id != null
       run: |
         draft_id=${{ steps.get_draft_id.outputs.draft_id }}
+        draft_name=${{ steps.get_draft_id.outputs.draft_name }}
         echo "Publishing release from draft ID: $draft_id"
-        curl -X PATCH -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" " https://api.github.com/repos/${{ github.repository }}/releases/$draft_id" -d '{"draft": false, "tag_name": "'"$draft_name"'"}'
 
+        echo "curl -X PATCH \
+        -H 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+        -H 'Accept: application/vnd.github.v3+json' \
+        'https://api.github.com/repos/${{ github.repository }}/releases/$draft_id' \
+        -d '{\"draft\": false, \"tag_name\": \"'"$draft_name\"'"}'"
+
+        curl -X PATCH \
+        -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+        -H "Accept: application/vnd.github.v3+json" \
+        "https://api.github.com/repos/${{ github.repository }}/releases/$draft_id" \
+        -d '{"draft": false, "tag_name": "'"$draft_name"'"}'
+        
         release_info=$(curl -sH "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
         https://api.github.com/repos/${{ github.repository }}/releases | \
         jq -r '.[] | select(.draft == false) | .html_url')
@@ -70,4 +78,3 @@ jobs:
           Release Details: ${{ steps.publish_release.outputs.release_info }}
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-
