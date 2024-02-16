@@ -1,6 +1,6 @@
 name: Publish release
 on:
-  workflow-dispatch:
+  workflow_dispatch:
 
 jobs:
   create_release:
