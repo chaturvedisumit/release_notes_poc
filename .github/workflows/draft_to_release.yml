@@ -55,7 +55,6 @@ jobs:
       
       if: steps.publish_release.outputs.release_info != ''
       uses: slackapi/slack-github-action@v1.25.0
-    
       with:
         channel-id: 'C06HM7BUHA6' 
         
